@@ -95,8 +95,35 @@ namespace Pizza_na_telefon
             Thread.Sleep(3000);
             Console.Clear();
             Console.WriteLine("Wprowadzanie danych osobowych, adresu, itp. bez walidacji");
+
+
+
+            Console.WriteLine("Naciśnij dowolny klawisz aby przejśc do podsumowania");
+            Console.ReadKey();
+            this.Podsumowanie();
         }
 
+        public void Podsumowanie()
+        {
+            Console.WriteLine("czyszczenie 3s, może jakiś loader?");
+            Thread.Sleep(3000);
+            Console.Clear();
+
+            Console.WriteLine("Tutaj wypisujemy elementy zamówienia + dane osobowe. wszystko ładnie wyśietlone i wgl. Trzeba pomyśleć nad obiegktem elementów menu tak by można było je wywoływać po numerkach.");
+
+            Console.WriteLine("Naciśnij dowolny klawisz aby przejśc do dalej");
+            Console.ReadKey();
+            this.ThankYouPage();
+        }
+
+        public void ThankYouPage()
+        {
+            Console.WriteLine("czyszczenie 3s, może jakiś loader?");
+            Thread.Sleep(3000);
+            Console.Clear();
+            Console.WriteLine("Dziekujemy za złozenie zamowienia i wgl, moze damy tu jakies smieszne emotki? ");
+            Console.WriteLine("𓁹‿𓁹");
+        }
         public void KoniecProgramu()
         {
             Console.WriteLine("Koniec programu");
