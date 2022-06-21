@@ -6,6 +6,11 @@ namespace Pizza_na_telefon
     public static class GlobalData
     {
         public static int[] MenuPositions = new int[99];
+        public static string KlientImie;
+        public static string KlientNazwisko;
+        public static string KlientAdres;
+        public static string KlientUwagiDoZamowienia;
+        public static string KlientMetodaPlatnosci;
     };
     public class Funtions
     {
@@ -64,7 +69,7 @@ namespace Pizza_na_telefon
             functions.CustomConsoleWriteLine("\n\nNapoje", "green", true); //środek
             functions.CustomConsoleWriteLine("\nCola\t\t7zł");
 
-            for(int i=0; i<99; i++)
+            for(int i=0; i<GlobalData.MenuPositions.Length; i++)
             {
                 if(i == 0)
                 {
@@ -77,19 +82,19 @@ namespace Pizza_na_telefon
                 var value = int.Parse(Console.ReadLine());
                 if(value == 0)
                 {
-                    Console.WriteLine("czyszczenie + przejscie do zamowienia");
-                    for (int j = 0; j <= GlobalData.MenuPositions.Length; j++)
-                    {
-                        if(GlobalData.MenuPositions[j] == 0)
-                        {
-                            continue;
-                        }
-                        Console.WriteLine("no to: " + GlobalData.MenuPositions[j]);
-                    }
+                    this.Szczegoly_Zamowienia();
                     return;
                 }
                 GlobalData.MenuPositions[i] = value;
             }
+        }
+
+        public void Szczegoly_Zamowienia()
+        {
+            Console.WriteLine("czyszczenie + przejscie do zamowienia' czyszczenie 3s, może jakiś loader?");
+            Thread.Sleep(3000);
+            Console.Clear();
+            Console.WriteLine("Wprowadzanie danych osobowych, adresu, itp. bez walidacji");
         }
 
         public void KoniecProgramu()
