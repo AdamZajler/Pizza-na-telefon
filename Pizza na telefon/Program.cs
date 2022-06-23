@@ -156,8 +156,6 @@ namespace Pizza_na_telefon
 
         public void Szczegoly_Zamowienia()
         {
-
-
             var functions = new Funtions();
             Console.WriteLine("czyszczenie + przejscie do zamowienia' czyszczenie 3s, może jakiś loader?");
             //Thread.Sleep(3000);
@@ -176,12 +174,23 @@ namespace Pizza_na_telefon
             do
             {
                 Console.WriteLine("\nWybierz metode płatności");
-                GlobalData.KlientMetodaPlatnosci = int.Parse(Console.ReadLine());
+                try
+                {
+                    GlobalData.KlientMetodaPlatnosci = int.Parse(Console.ReadLine());
+                }
+                catch
+                {
+                    Console.WriteLine("To nie liczba byczq");
+                }
 
                 switch (GlobalData.KlientMetodaPlatnosci)
                 {
                     case 1 :
                         Console.WriteLine("wybrana metoda płatności to płatność kartą");
+                        bledna_platnosc = true;
+                        break;
+                    case 2:
+                        Console.WriteLine("wybrana metoda płatności to płatność gotówką przy odbiorze");
                         bledna_platnosc = true;
                         break;
                     default:
