@@ -236,7 +236,10 @@ namespace Pizza_na_telefon
     {
         static void Main(string[] args)
         {
+            string fileName = "src/data/menu.json";
             List<Pizza> Menu = new List<Pizza>();
+            //string menuJSON = File.ReadAllText(fileName);
+            //Menu = JsonSerializer.Deserialize<List<Pizza>>(menuJSON);
             //var functions = new Funtions();
             //var pizzeria = new Pizzeria();
             Menu.Add(new Pizza
@@ -252,9 +255,8 @@ namespace Pizza_na_telefon
                 Price = 6941220
             });
 
-            string fileName = "src/data/menu.json";
-            //string jsonString = JsonSerializer.Serialize(Menu);
-            //File.WriteAllText(fileName, jsonString);
+            string jsonString = JsonSerializer.Serialize(Menu);
+            File.WriteAllText(fileName, jsonString);
 
             Console.WriteLine(File.ReadAllText(fileName));
         }
