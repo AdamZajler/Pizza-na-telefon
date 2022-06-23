@@ -2,16 +2,24 @@
 using System.Threading;
 using System.Collections.Generic;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.IO;
 
-namespace Pizza_na_telefon
+namespace Product_na_telefon
 {
-    public class Pizza
+    public class Product
+    {
+        public int Id { get; set; }
+        public int CategoryId { get; set; }
+        public string Name { get; set; }
+        public int Price { get; set; }
+        public int[] IngredientsId { get; set; }
+        public string CurrencySymbol { get; set; }
+    }
+    public class Ingredient
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Price { get; set; }
+        public int[] TagsId { get; set; }
     }
     public static class GlobalData
     {
@@ -62,7 +70,7 @@ namespace Pizza_na_telefon
         public Pizzeria()
         {
 
-            Functions.CustomConsoleWriteLine("Witaj w naszej Pizzeri Italiano", "green", true);
+            Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ඞ", "green", true);
             Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
             //Thread.Sleep(2500); //przerwa w wykonywaniu kodu na 2.5s
             Functions.CustomConsoleWriteLine("\nOto menu dla Ciebie", "", true);
@@ -110,7 +118,7 @@ namespace Pizza_na_telefon
             do
             {
                 if (GlobalData.MenuPositions.Count < 1) {
-                    Functions.CustomConsoleWriteLine("\nCo zamawiasz (podaj numer pozycji)?" + GlobalData.MenuPositions.Count);
+                    Functions.CustomConsoleWriteLine("\nCo zamawiasz (podaj numer pozycji)?");
                 }
                 else
                 {
@@ -215,29 +223,12 @@ namespace Pizza_na_telefon
     {
         static void Main(string[] args)
         {
-            string fileName = "src/data/menu.json";
-            List<Pizza> Menu = new List<Pizza>();
-            //string menuJSON = File.ReadAllText(fileName);
-            //Menu = JsonSerializer.Deserialize<List<Pizza>>(menuJSON);
-            //var functions = new Funtions();
-            //var pizzeria = new Pizzeria();
-            Menu.Add(new Pizza
-            {
-                Id=1,
-                Name="Kapa",
-                Price=69420
-            });
-            Menu.Add(new Pizza
-            {
-                Id = 2,
-                Name = "Kapaasdasd",
-                Price = 6941220
-            });
-
-            string jsonString = JsonSerializer.Serialize(Menu);
-            File.WriteAllText(fileName, jsonString);
-
-            Console.WriteLine(File.ReadAllText(fileName)); */
+            string fileName = "menu.json";
+            string menuJSON = File.ReadAllText(fileName);
+            List<Product> Menu = JsonSerializer.Deserialize<List<Product>>(menuJSON);
+            Console.WriteLine("Załadowano {0} pozycji w menu", Menu.Count);
+            //var functions = new Functions();
+            var pizzeria = new Pizzeria();
         }
     }
 }
