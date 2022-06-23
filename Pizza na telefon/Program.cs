@@ -1,9 +1,18 @@
 ﻿using System;
 using System.Threading;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.IO;
 
 namespace Pizza_na_telefon
 {
+    public class Pizza
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Price { get; set; }
+    }
     public static class GlobalData
     {
         public static List<int> MenuPositions = new List<int>();
@@ -17,15 +26,14 @@ namespace Pizza_na_telefon
     {
         public void CustomConsoleWriteLine(string text, string  text_color = "white", bool is_centered = false)
         {
+            text_color = text_color.ToLower();
+
             switch (text_color)
             {
                 case "red":
                     Console.ForegroundColor = ConsoleColor.Red;
                     break;
                 case "green":
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    break;
-                case "Green":
                     Console.ForegroundColor = ConsoleColor.Green;
                     break;
                 default:
@@ -228,8 +236,27 @@ namespace Pizza_na_telefon
     {
         static void Main(string[] args)
         {
-            var functions = new Funtions();
-            var pizzeria = new Pizzeria();
+            List<Pizza> Menu = new List<Pizza>();
+            //var functions = new Funtions();
+            //var pizzeria = new Pizzeria();
+            Menu.Add(new Pizza
+            {
+                Id=1,
+                Name="Kapa",
+                Price=69420
+            });
+            Menu.Add(new Pizza
+            {
+                Id = 2,
+                Name = "Kapaasdasd",
+                Price = 6941220
+            });
+
+            string fileName = "src/data/menu.json";
+            //string jsonString = JsonSerializer.Serialize(Menu);
+            //File.WriteAllText(fileName, jsonString);
+
+            Console.WriteLine(File.ReadAllText(fileName));
         }
     }
 }
