@@ -7,7 +7,7 @@ Aplikacja umożliwiająca przeglądanie i zamawianie pizz przez telefon
 
 - Adam Zajler
 - Kacper Brzycki
-- Kamil Wójcik
+- Kamil Wójcik 131897
 - Patrycja Losza
 
 ## Funkcjonalności
