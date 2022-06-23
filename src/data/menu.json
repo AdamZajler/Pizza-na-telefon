@@ -1,0 +1,13 @@
+[
+	{ "Id": 1, "Name": "Cola", "Price": 7, "CurrencySymbol": "zł" },
+	{ "Id": 2, "Name": "Fanta", "Price": 7, "CurrencySymbol": "zł" },
+	{ "Id": 3, "Name": "Sprite", "Price": 7, "CurrencySymbol": "zł" },
+	{ "Id": 4, "Name": "Woda gazowana", "Price": 7, "CurrencySymbol": "zł" },
+	{ "Id": 5, "Name": "Woda niegazowana", "Price": 7, "CurrencySymbol": "zł" },
+	{ "Id": 6, "Name": "Margherita", "Price": 18, "CurrencySymbol": "zł" },
+	{ "Id": 7, "Name": "Neapolitana", "Price": 22, "CurrencySymbol": "zł" },
+	{ "Id": 8, "Name": "Carbonara", "Price": 25, "CurrencySymbol": "zł" },
+	{ "Id": 9, "Name": "Mexico", "Price": 30, "CurrencySymbol": "zł" },
+	{ "Id": 10, "Name": "Rukola", "Price": 35, "CurrencySymbol": "zł" },
+	{ "Id": 11, "Name": "Hawaii", "Price": 25, "CurrencySymbol": "zł" }
+]
