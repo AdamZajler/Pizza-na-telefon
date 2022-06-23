@@ -22,9 +22,10 @@ namespace Pizza_na_telefon
         public static string KlientUwagiDoZamowienia;
         public static int KlientMetodaPlatnosci;
     };
-    public class Funtions
+
+    public static class Functions
     {
-        public void CustomConsoleWriteLine(string text, string  text_color = "white", bool is_centered = false)
+        public static string CustomConsoleWriteLine(string text, string text_color = "white", bool is_centered = false)
         {
             text_color = text_color.ToLower();
 
@@ -40,7 +41,7 @@ namespace Pizza_na_telefon
                     Console.ForegroundColor = ConsoleColor.White;
                     break;
             }
-            
+
             if (is_centered)
             {
                 Console.SetCursorPosition((Console.WindowWidth - text.Length) / 2, Console.CursorTop);
@@ -52,35 +53,7 @@ namespace Pizza_na_telefon
             }
 
             Console.ResetColor();
-        }
-
-        public dynamic MenuData(int position, string return_data)
-        {
-            string pozycja = "";
-            double cena = 0;
-
-            switch (position) {
-                case 1:
-                    pozycja="Pizza Cipolleo";
-                    cena = 69.420;
-                    break;
-                default:
-                    Console.WriteLine("Brak pozycji w menu");
-                    break;
-            }
-
-            switch (return_data)
-            {
-                case "price":
-                    return cena;
-                case "name":
-                    return pozycja;
-                default:
-                    Console.WriteLine("Nie ma takiego typu zwracania danych");
-                    break;
-            }
-
-            return 0;
+            return null;
         }
     }
 
@@ -88,12 +61,11 @@ namespace Pizza_na_telefon
     {
         public Pizzeria()
         {
-            var functions = new Funtions();
 
-            functions.CustomConsoleWriteLine("Witaj w naszej Pizzeri Italiano", "green", true);
-            functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
+            Functions.CustomConsoleWriteLine("Witaj w naszej Pizzeri Italiano", "green", true);
+            Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
             //Thread.Sleep(2500); //przerwa w wykonywaniu kodu na 2.5s
-            functions.CustomConsoleWriteLine("\nOto menu dla Ciebie", "", true);
+            Functions.CustomConsoleWriteLine("\nOto menu dla Ciebie", "", true);
 
             this.Menu();
 
@@ -115,35 +87,34 @@ namespace Pizza_na_telefon
         }
         public void Menu()
         {
-            var functions = new Funtions();
             Console.WriteLine("\n\n");
-            functions.CustomConsoleWriteLine("Napoje", "green", true); //środek
+            Functions.CustomConsoleWriteLine("Napoje", "green", true); //środek
             Console.WriteLine("\n");
-            functions.CustomConsoleWriteLine("1.Cola           \t7zł","", true);
-            functions.CustomConsoleWriteLine("2.Fanta          \t7zł","",true);
-            functions.CustomConsoleWriteLine("3.Sprite          \t7zł","",true);
-            functions.CustomConsoleWriteLine("4.Woda gazowana  \t7zł","",true);
-            functions.CustomConsoleWriteLine("5.Woda niegazowana\t7zł","",true);
+            Functions.CustomConsoleWriteLine("1.Cola           \t7zł","", true);
+            Functions.CustomConsoleWriteLine("2.Fanta          \t7zł","",true);
+            Functions.CustomConsoleWriteLine("3.Sprite          \t7zł","",true);
+            Functions.CustomConsoleWriteLine("4.Woda gazowana  \t7zł","",true);
+            Functions.CustomConsoleWriteLine("5.Woda niegazowana\t7zł","",true);
 
             Console.WriteLine("\n\n");
-            functions.CustomConsoleWriteLine("Pizza", "green", true); //środek
+            Functions.CustomConsoleWriteLine("Pizza", "green", true); //środek
             Console.WriteLine("\n");
-            functions.CustomConsoleWriteLine("6.Margherita \t\t18zł","", true);
-            functions.CustomConsoleWriteLine("7.Neapolitana\t\t22zł","", true);
-            functions.CustomConsoleWriteLine("8.Carbonara  \t\t25zł", "", true);
-            functions.CustomConsoleWriteLine("9.Mexico      \t30zł", "", true);
-            functions.CustomConsoleWriteLine("10.Rukola    \t\t35zł", "", true);
-            functions.CustomConsoleWriteLine("11.Hawaii    \t\t15zł", "", true);
+            Functions.CustomConsoleWriteLine("6.Margherita \t\t18zł","", true);
+            Functions.CustomConsoleWriteLine("7.Neapolitana\t\t22zł","", true);
+            Functions.CustomConsoleWriteLine("8.Carbonara  \t\t25zł", "", true);
+            Functions.CustomConsoleWriteLine("9.Mexico      \t30zł", "", true);
+            Functions.CustomConsoleWriteLine("10.Rukola    \t\t35zł", "", true);
+            Functions.CustomConsoleWriteLine("11.Hawaii    \t\t15zł", "", true);
 
             bool koniec_wprowadzania = false;
             do
             {
                 if (GlobalData.MenuPositions.Count < 1) {
-                    functions.CustomConsoleWriteLine("\nCo zamawiasz (podaj numer pozycji)?" + GlobalData.MenuPositions.Count);
+                    Functions.CustomConsoleWriteLine("\nCo zamawiasz (podaj numer pozycji)?" + GlobalData.MenuPositions.Count);
                 }
                 else
                 {
-                    functions.CustomConsoleWriteLine("\nCzy chcesz zamówić coś jeszcze? ('0' => koniec składania zamówienia)");
+                    Functions.CustomConsoleWriteLine("\nCzy chcesz zamówić coś jeszcze? ('0' => koniec składania zamówienia)");
                 }
 
                 var value = int.Parse(Console.ReadLine());
@@ -164,19 +135,18 @@ namespace Pizza_na_telefon
 
         public void Szczegoly_Zamowienia()
         {
-            var functions = new Funtions();
             Console.WriteLine("czyszczenie + przejscie do zamowienia' czyszczenie 3s, może jakiś loader?");
             //Thread.Sleep(3000);
             Console.Clear();
-            functions.CustomConsoleWriteLine("Wprowadź swoje imie","Green", false);
+            Functions.CustomConsoleWriteLine("Wprowadź swoje imie","Green", false);
             GlobalData.KlientImie = Console.ReadLine();
-            functions.CustomConsoleWriteLine("Wprowadź swoje nazwisko","Green", false);
+            Functions.CustomConsoleWriteLine("Wprowadź swoje nazwisko","Green", false);
             GlobalData.KlientNazwisko = Console.ReadLine();
-            functions.CustomConsoleWriteLine("Wprowadź miasto, ulice i numer domu/mieszkania","Green", false);
+            Functions.CustomConsoleWriteLine("Wprowadź miasto, ulice i numer domu/mieszkania","Green", false);
             GlobalData.KlientAdres = Console.ReadLine();
-            functions.CustomConsoleWriteLine("Uwagi do zamówienia", "Green", false);
+            Functions.CustomConsoleWriteLine("Uwagi do zamówienia", "Green", false);
             GlobalData.KlientUwagiDoZamowienia = Console.ReadLine();
-            functions.CustomConsoleWriteLine("Dostępne metody płatności:", "Green", false);
+            Functions.CustomConsoleWriteLine("Dostępne metody płatności:", "Green", false);
             Console.WriteLine("\n1.Karta płatnicza\n2.Płatność gotówką przy odbiorze");
             bool bledna_platnosc = false;
             do
@@ -246,9 +216,8 @@ namespace Pizza_na_telefon
         static void Main(string[] args)
         {
             List<Pizza> Menu = new List<Pizza>();
-            //var functions = new Funtions();
-            //var pizzeria = new Pizzeria();
-            Menu.Add(new Pizza
+            var pizzeria = new Pizzeria();
+            /* Menu.Add(new Pizza
             {
                 Id=1,
                 Name="Kapa",
@@ -265,7 +234,7 @@ namespace Pizza_na_telefon
             //string jsonString = JsonSerializer.Serialize(Menu);
             //File.WriteAllText(fileName, jsonString);
 
-            Console.WriteLine(File.ReadAllText(fileName));
+            Console.WriteLine(File.ReadAllText(fileName)); */
         }
     }
 }
