@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Pizza_na_telefon
 {
     public static class GlobalData
     {
-        public static int[] MenuPositions = new int[99];
+        public static List<int> MenuPositions = new List<int>();
         public static string KlientImie;
         public static string KlientNazwisko;
         public static string KlientAdres;
@@ -44,6 +45,35 @@ namespace Pizza_na_telefon
 
             Console.ResetColor();
         }
+
+        public dynamic MenuData(int position, string return_data)
+        {
+            string pozycja = "";
+            double cena = 0;
+
+            switch (position) {
+                case 1:
+                    pozycja="Pizza Cipolleo";
+                    cena = 69.420;
+                    break;
+                default:
+                    Console.WriteLine("Brak pozycji w menu");
+                    break;
+            }
+
+            switch (return_data)
+            {
+                case "price":
+                    return cena;
+                case "name":
+                    return pozycja;
+                default:
+                    Console.WriteLine("Nie ma takiego typu zwracania danych");
+                    break;
+            }
+
+            return 0;
+        }
     }
 
     public class Pizzeria
@@ -55,7 +85,6 @@ namespace Pizza_na_telefon
             functions.CustomConsoleWriteLine("Witaj w naszej Pizzeri Italiano", "green", true);
             functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
             //Thread.Sleep(2500); //przerwa w wykonywaniu kodu na 2.5s
-
             functions.CustomConsoleWriteLine("\nOto menu dla Ciebie", "", true);
 
             this.Menu();
@@ -64,6 +93,16 @@ namespace Pizza_na_telefon
             if (Console.ReadKey().Key == ConsoleKey.Escape)
             {
                 this.KoniecProgramu();
+            }
+        }
+
+        public void Loader()
+        {
+            Console.Write("Ładowanie... //");
+            for(int i=0; i<3; i++)
+            {
+                Console.Write("\\//\\");
+                Thread.Sleep(850);
             }
         }
         public void Menu()
@@ -88,24 +127,31 @@ namespace Pizza_na_telefon
             functions.CustomConsoleWriteLine("10.Rukola    \t\t35zł", "", true);
             functions.CustomConsoleWriteLine("11.Hawaii    \t\t15zł", "", true);
 
-            for (int i=0; i<GlobalData.MenuPositions.Length; i++)
+            bool koniec_wprowadzania = false;
+            do
             {
-                if(i == 0)
-                {
-                    functions.CustomConsoleWriteLine("\nCo zamawiasz (podaj numer pozycji)?");
+                if (GlobalData.MenuPositions.Count < 1) {
+                    functions.CustomConsoleWriteLine("\nCo zamawiasz (podaj numer pozycji)?" + GlobalData.MenuPositions.Count);
                 }
                 else
                 {
                     functions.CustomConsoleWriteLine("\nCzy chcesz zamówić coś jeszcze? ('0' => koniec składania zamówienia)");
                 }
+
                 var value = int.Parse(Console.ReadLine());
-                if(value == 0)
+
+                if (value == 0)
                 {
+                    koniec_wprowadzania = true;
                     this.Szczegoly_Zamowienia();
                     return;
                 }
-                GlobalData.MenuPositions[i] = value;
-            }
+                else
+                {
+                    GlobalData.MenuPositions.Add(value);
+                }
+
+            } while (koniec_wprowadzania == false);
         }
 
         public void Szczegoly_Zamowienia()
@@ -114,7 +160,7 @@ namespace Pizza_na_telefon
 
             var functions = new Funtions();
             Console.WriteLine("czyszczenie + przejscie do zamowienia' czyszczenie 3s, może jakiś loader?");
-            Thread.Sleep(3000);
+            //Thread.Sleep(3000);
             Console.Clear();
             functions.CustomConsoleWriteLine("Wprowadź swoje imie","Green", false);
             GlobalData.KlientImie = Console.ReadLine();
