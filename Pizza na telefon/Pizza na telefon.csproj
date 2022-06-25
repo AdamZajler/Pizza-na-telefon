@@ -11,4 +11,14 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="theme.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="theme.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
