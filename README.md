@@ -15,3 +15,8 @@ Aplikacja umożliwiająca przeglądanie i zamawianie pizz przez telefon
 - Przeglądanie dostępnych pizz
 - Zamawianie pizzy oraz napojów
 - Wybór płatności kartą lub gotówką
+
+## Logowanie do panelu administracyjnego w aplikacji
+Login: `kobe`
+
+Hasło: `technik2`
