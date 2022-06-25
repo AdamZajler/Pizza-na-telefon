@@ -12,7 +12,7 @@ Aplikacja umożliwiająca przeglądanie i zamawianie pizz przez telefon
 
 ## Funkcjonalności
 
-- Losowe piosenki w tle
+- Losowe utwory w tle przywołujące na myśl piękną Italię <3  
 - Przeglądanie dostępnych pizz
 - Zamawianie pizzy oraz napojów
 - Przeglądanie zamówienia
