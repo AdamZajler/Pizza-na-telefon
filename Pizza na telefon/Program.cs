@@ -3,10 +3,20 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.IO;
+using System.Linq;
 
 namespace Product_na_telefon
 {
-    public class Product
+    interface IProduct
+    {
+        public int Id { get; set; }
+        public int CategoryId { get; set; }
+        public string Name { get; set; }
+        public int Price { get; set; }
+        public int[] IngredientsId { get; set; }
+        public string CurrencySymbol { get; set; }
+    }
+    public class Product : IProduct
     {
         public int Id { get; set; }
         public int CategoryId { get; set; }
@@ -17,21 +27,20 @@ namespace Product_na_telefon
     }
     public class Ingredient
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int[] TagsId { get; set; }
+        public int IngredientId { get; set; }
+        public string IngredientName { get; set; }
+        public int[] IngredientPrice { get; set; }
     }
     public static class GlobalData
     {
         public static List<Product> Menu = new List<Product>();
-        public static List<int> Order = new List<int>();
+        public static List<Product> Order = new List<Product>();
         public static string KlientImie;
         public static string KlientNazwisko;
         public static string KlientAdres;
         public static string KlientUwagiDoZamowienia;
         public static int KlientMetodaPlatnosci;
     };
-
     public static class Functions
     {
         public static string CustomConsoleWriteLine(string text, string text_color = "white", bool is_centered = false)
@@ -68,98 +77,151 @@ namespace Product_na_telefon
 
     public class Pizzeria
     {
-        public void WyborKategorii()
+        public void Greeting()
+        {
+            Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ඞ", "green", true);
+            Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
+        }
+        public string CheckCategoryString(string category_name)
+        {
+            string result = "0";
+            category_name = category_name.ToLower();
+
+            foreach (Product single_product in GlobalData.Menu)
+            {
+                switch (category_name)
+                {
+                    case "napoje":
+                            result = "1";
+                        break;
+                    case "pizze":
+                        result = "2";
+                        break;
+                    default:
+                        result = "0";
+                        break;
+                }
+            }
+
+            return result;
+        }
+        public void DisplayOrder()
+        {
+            Console.Clear();
+            Functions.CustomConsoleWriteLine("Twoje zamówienie: \n", "green", true);
+
+            int i = 0;
+            foreach (Product single_product in GlobalData.Order)
+            {
+                Console.WriteLine("{0}. {1} {2}{3}", ++i, single_product.Name, single_product.Price, single_product.CurrencySymbol);
+            }
+
+            Functions.CustomConsoleWriteLine("\nNaciśnij dowolny przycisk aby wyjść z przeglądu zamówienia");
+            Console.ReadKey();
+            Console.Clear();
+            this.Greeting();
+        }
+        public int ChooseCategory()
         {
             bool hide_menu = false;
             int selectedCategory = 0;
+            string selectedCategory_string = "0";
             do
             {
                 Functions.CustomConsoleWriteLine("\n1. Napoje", "", false);
                 Functions.CustomConsoleWriteLine("2. Pizze", "", false);
+
+                if(GlobalData.Order.Count > 0)
+                {
+                    Functions.CustomConsoleWriteLine("\n9. Zobacz moje zamówienie", "", false);
+                    Functions.CustomConsoleWriteLine("0. Przejdź do składania zamówienia", "", false);
+                }
+
                 Console.Write("\nTwój wybór: ");
                 try
                 {
-                    selectedCategory = int.Parse(Console.ReadLine());
+                    selectedCategory_string = Console.ReadLine();
+                    selectedCategory = int.Parse(selectedCategory_string);
                 }
                 catch
                 {
-                    Console.WriteLine("\nPodaj liczbe!");
+                    selectedCategory = int.Parse(CheckCategoryString(selectedCategory_string));
                 }
-                
-                if (selectedCategory != 0)
+
+
+                if (selectedCategory_string == "9" && GlobalData.Order.Count > 0)
+                {
+                    this.DisplayOrder();
+                }
+                else if (selectedCategory != 0)
                 {
                     hide_menu = this.Menu(selectedCategory);
                 }
-
-                selectedCategory = 0;
+                else if (selectedCategory == 0)
+                {
+                    Functions.CustomConsoleWriteLine("Nie ma takiej pozycji w menu!", "red", false);
+                }
             } while (hide_menu == false);
 
-            return;
+            return selectedCategory;
         }
-
-        public bool CheckMenuPosition(int menuPosition)
+        public int CheckMenuPositionId(int providedPosition, List<Product> products)
         {
-            bool isInMenu = false;
-
-            foreach(Product single_product in GlobalData.Menu)
-            {
-                if(single_product.Id == menuPosition)
-                {
-                    isInMenu = true;
-                }
-            }
-
-            return isInMenu;
+            var menuPosition = products.Find(product => product.Id == providedPosition);
+            return menuPosition == null ? -1 : menuPosition.Id;
         }
-
+        public int CheckMenuPositionString(string providedPosition, List<Product> products)
+        {
+            var menuPosition = products.Find(product => product.Name.ToLower() == providedPosition.ToLower());
+            return menuPosition == null ? -1 : menuPosition.Id;
+        }
+        public Product GiveMenuObjById(int menuPositionId)
+        {
+            var menuPosition = GlobalData.Menu.Find(i => i.Id == menuPositionId);
+            return menuPosition;
+        }
         public Pizzeria()
         {
+            this.Greeting();
 
-            Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ඞ", "green", true);
-            Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
-            //Thread.Sleep(2500); //przerwa w wykonywaniu kodu na 2.5s
+            int selected_category = this.ChooseCategory();
 
-            this.WyborKategorii();
+            var selected_category_products = GlobalData.Menu.Where(i => i.CategoryId == selected_category).ToList();
 
-            bool hide_menu = false;
+            string value_string;
+            int value = -1;
+            bool is_choosing_position = true;
 
-            do
+            Console.Write("\nWybierz pozycje ('0' powrót do kategori)");
+            while(is_choosing_position != false)
             {
-                int value = -1;
+                Console.Write("\n");
+                Console.Write("Twój wybór: ");
+                value_string = Console.ReadLine();
 
-                Console.Write("\nWybierz pozycje ('0' powrót do kategori)\n");
-
-                while(value != 0)
+                try
                 {
-                    Console.Write("Wybrana pozycja: ");
-                    try
-                    {
-                        value = int.Parse(Console.ReadLine());
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Podaj liczbe!\n");
-                        value = -1;
-                    }
-
-                    if (this.CheckMenuPosition(value) && value != -1)
-                    {
-                        GlobalData.Order.Add(value);
-                    }
-                    else if(value != -1)
-                    {
-                        Console.WriteLine("Podanej pozycji nie ma w menu!\n");
-                    }
-
+                    value = this.CheckMenuPositionId(int.Parse(value_string), selected_category_products);
+                }catch
+                {
+                    value = this.CheckMenuPositionString(value_string, selected_category_products);
                 }
 
-            } while (hide_menu == false);
-            
-            /* Console.WriteLine("\n\nAby zamknąć program w dowolnej chwili kliknij klaiwsz 'esc'");
-            if (Console.ReadKey().Key == ConsoleKey.Escape)
-            {
-                this.KoniecProgramu();
-            } */
+                if(value != -1)
+                {
+                    GlobalData.Order.Add(GiveMenuObjById(value));
+                }
+                else if(value_string == "0")
+                {
+                    Console.Clear();
+                    this.Greeting();
+                    this.ChooseCategory();
+                }
+                else
+                {
+                    Functions.CustomConsoleWriteLine("Nie ma takiej pozycji w menu", "red", false);
+                }
+            }
         }
 
         public void Loader()
@@ -203,52 +265,6 @@ namespace Product_na_telefon
             }
 
             return menu_function_success;
-
-
-            /* Console.WriteLine("\n\n");
-            Functions.CustomConsoleWriteLine("Napoje", "green", true); //środek
-            Console.WriteLine("\n");
-            Functions.CustomConsoleWriteLine("1.Cola           \t7zł","", true);
-            Functions.CustomConsoleWriteLine("2.Fanta          \t7zł","",true);
-            Functions.CustomConsoleWriteLine("3.Sprite          \t7zł","",true);
-            Functions.CustomConsoleWriteLine("4.Woda gazowana  \t7zł","",true);
-            Functions.CustomConsoleWriteLine("5.Woda niegazowana\t7zł","",true);
-
-            Console.WriteLine("\n\n");
-            Functions.CustomConsoleWriteLine("Pizza", "green", true); //środek
-            Console.WriteLine("\n");
-            Functions.CustomConsoleWriteLine("6.Margherita \t\t18zł","", true);
-            Functions.CustomConsoleWriteLine("7.Neapolitana\t\t22zł","", true);
-            Functions.CustomConsoleWriteLine("8.Carbonara  \t\t25zł", "", true);
-            Functions.CustomConsoleWriteLine("9.Mexico      \t30zł", "", true);
-            Functions.CustomConsoleWriteLine("10.Rukola    \t\t35zł", "", true);
-            Functions.CustomConsoleWriteLine("11.Hawaii    \t\t15zł", "", true); */
-
-            //bool koniec_wprowadzania = false;
-            //do
-            //{
-            //    if (GlobalData.Menu.Count < 1) {
-            //        Functions.CustomConsoleWriteLine("\nCo zamawiasz (podaj numer pozycji)?");
-            //    }
-            //    else
-            //    {
-            //        Functions.CustomConsoleWriteLine("\nCzy chcesz zamówić coś jeszcze? ('0' => koniec składania zamówienia)");
-            //    }
-
-            //    var value = int.Parse(Console.ReadLine());
-
-            //    if (value == 0)
-            //    {
-            //        koniec_wprowadzania = true;
-            //        this.Szczegoly_Zamowienia();
-            //        return;
-            //    }
-            //    else
-            //    {
-            //        //GlobalData.Menu.Add(value);
-            //    }
-
-            //} while (koniec_wprowadzania == false);
         }
 
         public void Szczegoly_Zamowienia()
@@ -336,7 +352,7 @@ namespace Product_na_telefon
             string fileName = "../../../../src/data/menu.json";
             string menuJSON = File.ReadAllText(fileName);
             GlobalData.Menu = JsonSerializer.Deserialize<List<Product>>(menuJSON);
-            Console.WriteLine("Załadowano {0} pozycji w menu", GlobalData.Menu.Count);
+            //Console.WriteLine("Załadowano {0} pozycji w menu", GlobalData.Menu.Count);
             //var functions = new Functions();
             var pizzeria = new Pizzeria();
         }
