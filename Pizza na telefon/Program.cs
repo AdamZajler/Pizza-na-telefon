@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.IO;
 using System.Linq;
+using System.Media;
 
 namespace Product_na_telefon
 {
@@ -35,6 +36,7 @@ namespace Product_na_telefon
     {
         public static List<Product> Menu = new List<Product>();
         public static List<Product> Order = new List<Product>();
+        public static List<Ingredient> Ingredients = new List<Ingredient>();
         public static string KlientImie;
         public static string KlientNazwisko;
         public static string KlientAdres;
@@ -558,7 +560,7 @@ namespace Product_na_telefon
                 {
                     Console.WriteLine("Podałeś błędne dane (płatność ~280)");
                 }
-
+                string amogus;
                 switch (GlobalData.KlientMetodaPlatnosci)
                 {
                     case 1 :
@@ -571,10 +573,10 @@ namespace Product_na_telefon
                         break;
                     case 3:
                         Console.WriteLine("wybrana metoda płatności to BLIK" +
-                                        "\nPodaj kod BLIK:");// TODO: dac to do do while zeby siciagal tylko 6 licb
-                        bledna_platnosc = true;
-                        Console.ReadLine();
-                        break;
+                                        "\nPodaj kod BLIK:");
+                        amogus = Convert.ToString(Console.ReadLine());
+                        if (amogus.Length == 6) { bledna_platnosc = true; break; }
+                        else { Console.WriteLine("Podałeś błędny kod"); break; }
                     default:
                         Console.WriteLine("Wybrana metoda płatności nie istnieje");
                         break;
@@ -620,11 +622,11 @@ namespace Product_na_telefon
 
         public void ThankYouPage()
         {
-            Console.WriteLine("czyszczenie 3s, może jakiś loader?");
-            Thread.Sleep(3000);
+            Random rad = new Random();
+            int a = rad.Next(45, 65);
             Console.Clear();
-            Console.WriteLine("Dziekujemy za złozenie zamowienia i wgl, moze damy tu jakies smieszne emotki? ");
-            Console.WriteLine("𓁹‿𓁹");
+            Console.WriteLine("Dziekujemy za złozenie zamowienia." +
+                "\nTwoje zamówienie będzie gotowe za około {0}",a);
         }
         public void KoniecProgramu()
         {
@@ -636,14 +638,17 @@ namespace Product_na_telefon
     {
         static void Main(string[] args)
         {
-            //SoundPlayer player = new SoundPlayer();
-            //player.SoundLocation = "../../../../src/data/menu.wav";
-            //player.Play();
+            SoundPlayer player = new SoundPlayer();
+            player.SoundLocation = "../../../../src/data/theme.wav";
+            player.PlayLooping();
 
             //Console.Beep(800, 1000);
-            string fileName = "../../../../src/data/menu.json";
-            string menuJSON = File.ReadAllText(fileName);
+            string menuPath = "../../../../src/data/menu.json";
+            string menuJSON = File.ReadAllText(menuPath);
+            string ingredientsPath = "../../../../src/data/ingredients.json";
+            string ingredientsJSON = File.ReadAllText(ingredientsPath);
             GlobalData.Menu = JsonSerializer.Deserialize<List<Product>>(menuJSON);
+            GlobalData.Ingredients = JsonSerializer.Deserialize<List<Ingredient>>(ingredientsJSON);
             //Console.WriteLine("Załadowano {0} pozycji w menu", GlobalData.Menu.Count);
             //var functions = new Functions();
             var pizzeria = new Pizzeria();

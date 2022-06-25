@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< Updated upstream
     <None Remove="theme.wav" />
   </ItemGroup>
 
@@ -19,6 +20,12 @@
     <Content Include="theme.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+=======
+>>>>>>> Stashed changes
+    <PackageReference Include="System.Windows.Extensions" Version="6.0.0" />
   </ItemGroup>
 
 </Project>
