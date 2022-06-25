@@ -28,6 +28,8 @@ Aplikacja umożliwiająca przeglądanie i zamawianie pizz przez telefon
 | `.NET Core`      | `3.1` | 
 | `Głośniki / Dźwięk`      | `Włączone` | 
 
+Program należy włączać bezpośrednio z poziomu projektu!
+
 ## Logowanie do panelu administracyjnego w aplikacji
 Login: `kobe`
 
