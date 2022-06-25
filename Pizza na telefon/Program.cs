@@ -347,7 +347,7 @@ namespace Product_na_telefon
             Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ", "green", true);
             Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia\n", "", true);
             Functions.CustomConsoleWriteLine("Wpisz numer aby otworzyć kategorie menu", "red", true);
-
+            this.ChooseCategory();
         }
         public string CheckCategoryString(string category_name)
         {
@@ -374,7 +374,7 @@ namespace Product_na_telefon
         }
         public void DisplayOrder()
         {
-            bool display_logic = true;
+            bool display_logic = false;
             int j = 0;
             string display_choice = "";
             do
@@ -391,26 +391,22 @@ namespace Product_na_telefon
                                 "\nWybierz '1' aby usunąc element zamówienia");
                 display_choice = Console.ReadLine();
 
-                switch (display_choice)
+                if (display_choice == "0")
                 {
-                    case "0": 
-                        { 
-                            Console.WriteLine("W ciągu (3/s) znajdziesz się w głównym menu"); 
-                            Thread.Sleep(3000); Console.Clear();
-                            this.Greeting();
-                            return; 
-                        }
-                    case "1": 
-                        {
-                            Console.WriteLine("Który element chcesz usunąć?"); 
-                            j = Convert.ToInt32(Console.ReadLine());
-                            GlobalData.Order.RemoveAt(--j);
-                            display_logic = false;
-                            return; 
-                        }
-                    default: { Console.WriteLine("Wybrałeś błędną ocje"); display_logic = false; return; }
+                    Console.WriteLine("W ciągu (3/s) znajdziesz się w głównym menu");
+                    Thread.Sleep(3000); 
+                    Console.Clear();
+                    display_logic = true;
                 }
-            } while (display_logic==true);
+                else if (display_choice == "1")
+                {
+                    Console.WriteLine("Który element chcesz usunąć?");
+                    j = Convert.ToInt32(Console.ReadLine());
+                    GlobalData.Order.RemoveAt(--j);
+                }
+                else Console.WriteLine("Wybrałeś błędną ocje");
+            } while(display_logic!=true);
+            this.Greeting();
         }
         public int ChooseCategory()
         {
