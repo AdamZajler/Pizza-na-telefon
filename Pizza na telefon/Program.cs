@@ -31,12 +31,16 @@ namespace Product_na_telefon
         public int Id { get; set; }
         public string Name { get; set; }
         public float Price { get; set; }
+        public string CurrencySymbol { get; set; }
+
     }
     public class Ingredient : IIngredient
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public float Price { get; set; }
+        public string CurrencySymbol { get; set; }
+
     }
     public static class GlobalData
     {
@@ -328,7 +332,6 @@ namespace Product_na_telefon
         {
 
         }
-
         public static void SaveIngredients()
         {
             string ingredientsPath = "../../../../src/data/ingredients.json";
@@ -351,6 +354,8 @@ namespace Product_na_telefon
 
                 newIngredient.Name = "";
                 newIngredient.Price = 0;
+                newIngredient.CurrencySymbol = "zł";
+
                 bool ingredient_correct = false;
                 do
                 {
@@ -383,10 +388,22 @@ namespace Product_na_telefon
                         }
                     } while (newIngredient.Price < 0);
 
+                    do
+                    {
+                        Functions.CustomConsoleWrite("\nPodaj symbol ceny dodatku: ");
+                        newIngredient.CurrencySymbol = Console.ReadLine();
+
+                        if (newIngredient.CurrencySymbol == "")
+                        {
+                            Functions.CustomConsoleWriteLine("Nie możesz wpisać pustego symbolu ceny skladnika!", "red", false);
+                        }
+                    } while (newIngredient.CurrencySymbol == "");
+
                     Functions.CustomConsoleWriteLine("\nDane nowego dodatku: ");
                     Console.WriteLine("Id: {0}", newIngredient.Id);
                     Console.WriteLine("Nazwa: {0}", newIngredient.Name);
                     Console.WriteLine("Cena: {0}", newIngredient.Price);
+                    Console.WriteLine("Symbol ceny: {0}", newIngredient.CurrencySymbol);
 
                     Functions.CustomConsoleWrite("\nCzy podane dane są prawidłowe? (Y/N):  ", "", false);
                     string ing_correct = Console.ReadLine().ToLower();
@@ -399,16 +416,238 @@ namespace Product_na_telefon
                 Functions.CustomConsoleWrite("\nCzy chcesz dodać kolejny składnik? (Y/N):  ");
                 string next_ing = Console.ReadLine().ToLower();
                 next_ingredient = next_ing == "y" ? true : false;
+
             } while (next_ingredient == true);
             
 
             Functions.CustomConsoleWriteLine("\nNaciśnij dowolny przycisk aby wyjść z dodawania składniku.");
             Console.ReadKey();
         }
+        public static void SaveEditedIngredient(int Id, Ingredient newIngredient)
+        {
+            GlobalData.Ingredients.RemoveAt(GlobalData.Ingredients.IndexOf(GlobalData.Ingredients.Find(i => i.Id == Id)));
+            GlobalData.Ingredients.Add(newIngredient);
 
+            string ingredientsPath = "../../../../src/data/ingredients.json";
+            string ingredients = JsonSerializer.Serialize(GlobalData.Ingredients);
+            File.WriteAllText(ingredientsPath, ingredients);
+            Functions.CustomConsoleWriteLine("\nZapisano edytowany składnik!", "green", false);
+        }
         public static void EditIngredient()
         {
+            Console.Clear();
+            AdminGreeting();
+            Functions.CustomConsoleWriteLine("====== Edycja składnika ======\n", "red", true);
 
+            foreach(Ingredient ingredient in GlobalData.Ingredients)
+            {
+                Console.WriteLine("{0}. {1} {2}{3}", ingredient.Id, ingredient.Name, ingredient.Price, ingredient.CurrencySymbol);
+            }
+
+            bool ingredientExists = false;
+            do
+            {
+                bool isIngredientCorrect = false;
+                int ingreditentIdToCustomize = 0;
+                do
+                {
+                    Functions.CustomConsoleWrite("\nJaki chcesz edytować składnik ('0' wyjście): ");
+                    try
+                    {
+                        ingreditentIdToCustomize = int.Parse(Console.ReadLine());
+                    }
+                    catch
+                    {
+                        Functions.CustomConsoleWrite("\nNie możesz podać litery!", "red", false);
+                        ingreditentIdToCustomize = -1;
+                    }
+
+                    if(ingreditentIdToCustomize != -1)
+                    {
+                        isIngredientCorrect = true;
+                    }
+
+                } while (isIngredientCorrect == false);
+
+                if (ingreditentIdToCustomize == 0)
+                {
+                    ingredientExists = true;
+                    return;
+                }
+
+                if (GlobalData.Ingredients.Any(i => i.Id == ingreditentIdToCustomize))
+                {
+                    Ingredient ingredientToCustomize = GlobalData.Ingredients.Find(i => i.Id == ingreditentIdToCustomize);
+
+                    Ingredient newIngredient = new Ingredient();
+                    newIngredient.Id = ingredientToCustomize.Id;
+                    newIngredient.Name = ingredientToCustomize.Name;
+                    newIngredient.Price = ingredientToCustomize.Price;
+                    newIngredient.CurrencySymbol = ingredientToCustomize.CurrencySymbol;
+
+                    ingredientExists = true;
+
+                    Functions.CustomConsoleWrite("\nProdukt do edycji: ", "green", false);
+                    Console.Write("{0}. {1} {2}{3}", newIngredient.Id, newIngredient.Name, newIngredient.Price, newIngredient.CurrencySymbol);
+
+                    bool isStillEditing = false;
+                    do
+                    {
+                        Console.WriteLine("\n\n1. Edycja nazwy");
+                        Console.WriteLine("2. Edycja ceny");
+                        Console.WriteLine("3. Edycja symbolu ceny");
+
+                        int positionToEdit = 0;
+                        do
+                        {
+                            Console.Write("\nKtórą pozycję chcesz edytować?: ");
+                            try
+                            {
+                                positionToEdit = int.Parse(Console.ReadLine());
+                            }
+                            catch
+                            {
+                                Thread.Sleep(1);
+                            }
+
+                            if (positionToEdit != 1 && positionToEdit != 2 && positionToEdit != 3)
+                            {
+                                Functions.CustomConsoleWriteLine("Nie ma takiej opcji!", "red", false);
+                                Thread.Sleep(1000);
+                            }
+                        } while (positionToEdit != 1 && positionToEdit != 2 && positionToEdit != 3);
+
+                        Console.Clear();
+                        AdminGreeting();
+
+                        switch (positionToEdit)
+                        {
+                            case 1:
+                                Functions.CustomConsoleWriteLine("====== Edycja nazwy składnika ======\n", "red", true);
+
+                                Functions.CustomConsoleWriteLine("Aktualna nazwa: " + ingredientToCustomize.Name, "green", false);
+
+                                bool isNewNameCorrect = false;
+                                string newIngredientName = "";
+                                do
+                                {
+                                    do
+                                    {
+                                        Functions.CustomConsoleWrite("\nNowa nazwa: ", "", false);
+                                        newIngredientName = Console.ReadLine();
+
+                                        if (newIngredientName == "")
+                                        {
+                                            Functions.CustomConsoleWriteLine("Nie mmożesz podać pustej nazwy!", "red", false);
+                                            Thread.Sleep(1000);
+                                        }
+                                    } while (newIngredientName == "");
+
+                                    Console.Write("\nCzy chcesz jeszcze raz edytować nazwę? (Y/N): ");
+                                    string nameCorrect = Console.ReadLine().ToLower();
+                                    isNewNameCorrect = nameCorrect == "y" ? false : true;
+                                } while (isNewNameCorrect == false);
+
+                                newIngredient.Name = newIngredientName;
+                                SaveEditedIngredient(newIngredient.Id, newIngredient);
+                                break;
+
+                            case 2:
+                                Functions.CustomConsoleWriteLine("====== Edycja ceny składnika ======\n", "red", true);
+
+                                Functions.CustomConsoleWriteLine("Aktualna cena: " + ingredientToCustomize.Price, "green", false);
+
+                                bool isNewPriceCorrect = false;
+                                float newIngredientPrice = 0;
+                                do
+                                {
+                                    do
+                                    {
+                                        Functions.CustomConsoleWrite("\nNowa cena: ", "", false);
+                                        try
+                                        {
+                                            newIngredientPrice = float.Parse(Console.ReadLine());
+                                        }
+                                        catch
+                                        {
+                                            Functions.CustomConsoleWriteLine("Podana cena nie jest liczbą!", "red", false);
+                                            newIngredientPrice = -1;
+                                        }
+
+                                        if (newIngredientPrice < 0)
+                                        {
+                                            Functions.CustomConsoleWriteLine("Cena nie może być ujemna!", "red", false);
+                                            newIngredientPrice = -1;
+                                            Thread.Sleep(1000);
+                                        }
+                                    } while (newIngredientPrice < 0);
+
+                                    Console.Write("\nCzy chcesz jeszcze raz edytować cenę? (Y/N): ");
+                                    string priceCorrect = Console.ReadLine().ToLower();
+                                    isNewPriceCorrect = priceCorrect == "y" ? false : true;
+                                } while (isNewPriceCorrect == false);
+
+                                newIngredient.Price = newIngredientPrice;
+                                SaveEditedIngredient(newIngredient.Id, newIngredient);
+                                break;
+                            case 3:
+                                Functions.CustomConsoleWriteLine("====== Edycja symbolu ceny składnika ======\n", "red", true);
+
+                                Functions.CustomConsoleWriteLine("Aktualna cena: " + ingredientToCustomize.CurrencySymbol, "green", false);
+
+                                bool isNewPriceCurrencySymbolCorrect = false;
+                                string newIngredientPriceCurrencySymbol = "zł";
+                                do
+                                {
+                                    do
+                                    {
+                                        Functions.CustomConsoleWrite("\nNowy symbol ceny: ", "", false);
+                                        newIngredientPriceCurrencySymbol = Console.ReadLine();
+
+                                        if (newIngredientPriceCurrencySymbol == "")
+                                        {
+                                            Functions.CustomConsoleWriteLine("Symbol ceny nie może być pusty!", "red", false);
+                                            newIngredientPriceCurrencySymbol = "";
+                                            Thread.Sleep(1000);
+                                        }
+                                    } while (newIngredientPriceCurrencySymbol == "");
+
+                                    Console.Write("\nCzy chcesz jeszcze raz edytować symbol ceny? (Y/N): ");
+                                    string priceSymbolCorrect = Console.ReadLine().ToLower();
+                                    isNewPriceCurrencySymbolCorrect = priceSymbolCorrect == "y" ? false : true;
+                                } while (isNewPriceCurrencySymbolCorrect == false);
+
+                                newIngredient.CurrencySymbol = newIngredientPriceCurrencySymbol;
+                                SaveEditedIngredient(newIngredient.Id, newIngredient);
+                                break;
+                            default:
+                                Console.WriteLine("elo errollel");
+                                break;
+                        }
+
+                        Console.Write("\nCzy chcesz dalej edytować składnik? (Y/N)");
+                        string isStillEdit = Console.ReadLine().ToLower();
+                        isStillEditing = isStillEdit == "y" ? false : true;
+
+                        if(isStillEditing == false)
+                        {
+                            Console.Clear();
+                            AdminGreeting();
+                            Functions.CustomConsoleWriteLine("====== Edycja nazwy składnika ======\n", "red", true);
+                            Functions.CustomConsoleWrite("\nProdukt do edycji: ", "green", false);
+                            Console.Write("{0}. {1} {2}{3}", newIngredient.Id, newIngredient.Name, newIngredient.Price, newIngredient.CurrencySymbol);
+                        }
+                    } while (isStillEditing == false);
+                }
+                else
+                {
+                    Functions.CustomConsoleWriteLine("\nSkładnik o podanym Id nie istnieje", "red", false);
+                    Thread.Sleep(1500);
+                }
+            } while (ingredientExists == false);
+
+            Functions.CustomConsoleWriteLine("\nNaciśnij dowolny przycisk aby wyjść z edycji składnika.");
+            Console.ReadKey();
         }
     }
     public class Pizzeria
