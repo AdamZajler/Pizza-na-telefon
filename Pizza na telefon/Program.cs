@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.IO;
 using System.Linq;
+using System.Media;
 
 namespace Product_na_telefon
 {
@@ -581,11 +582,11 @@ namespace Product_na_telefon
 
         public void ThankYouPage()
         {
-            Console.WriteLine("czyszczenie 3s, może jakiś loader?");
-            Thread.Sleep(3000);
+            Random rad = new Random();
+            int a = rad.Next(45, 65);
             Console.Clear();
-            Console.WriteLine("Dziekujemy za złozenie zamowienia i wgl, moze damy tu jakies smieszne emotki? ");
-            Console.WriteLine("𓁹‿𓁹");
+            Console.WriteLine("Dziekujemy za złozenie zamowienia." +
+                "\nTwoje zamówienie będzie gotowe za około {0}",a);
         }
         public void KoniecProgramu()
         {
@@ -597,9 +598,10 @@ namespace Product_na_telefon
     {
         static void Main(string[] args)
         {
-            //SoundPlayer player = new SoundPlayer();
-            //player.SoundLocation = "../../../../src/data/menu.wav";
-            //player.Play();
+            SoundPlayer player = new SoundPlayer();
+            //player.SoundLocation = "Pizza na telefon/theme.wav";
+            player.SoundLocation = "../../../../src/data/theme.wav";
+            player.PlayLooping();
 
             //Console.Beep(800, 1000);
             string fileName = "../../../../src/data/menu.json";
