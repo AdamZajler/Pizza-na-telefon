@@ -3,6 +3,8 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.IO;
+//using System.Media;
+//using System.ComponentModel;
 
 namespace Product_na_telefon
 {
@@ -30,6 +32,9 @@ namespace Product_na_telefon
         public static string KlientAdres;
         public static string KlientUwagiDoZamowienia;
         public static int KlientMetodaPlatnosci;
+        public static string AdminLogin = "kobe";
+        public static string AdminPass = "technik2";
+
     };
 
     public static class Functions
@@ -66,6 +71,86 @@ namespace Product_na_telefon
         }
     }
 
+    public class Admin
+    {
+        public static void Login()
+        {
+            bool loginPassed = false;
+            do
+            {
+                Console.Clear();
+                Console.Write("Podaj login: ");
+                string login = Console.ReadLine();
+                Console.Write("Podaj hasło: ");
+                var pass = string.Empty;
+
+                ConsoleKey key;
+                do
+                {
+                    var keyInfo = Console.ReadKey(intercept: true);
+                    key = keyInfo.Key;
+
+                    if (key == ConsoleKey.Backspace && pass.Length > 0)
+                    {
+                        Console.Write("\b \b");
+                        pass = pass[0..^1];
+                    }
+                    else if (!char.IsControl(keyInfo.KeyChar))
+                    {
+                        Console.Write("*");
+                        pass += keyInfo.KeyChar;
+                    }
+                } while (key != ConsoleKey.Enter);
+
+                if (login == GlobalData.AdminLogin && pass == GlobalData.AdminPass)
+                {
+                    Functions.CustomConsoleWriteLine("\n\n Poprawne hasło! Przekierowywanie...", "green", true);
+                    Thread.Sleep(1000);
+                    Panel();
+                    return;
+                }
+                else
+                {
+                    Functions.CustomConsoleWriteLine("\n\nLogin i hasło nie są zgodne! Wpisz '0' aby wrócić do menu głównego lub dowolny inny klawisz aby spróbować ponownie!", "red", true);
+
+                    var keyInfo = Console.ReadKey(intercept: true);
+                    key = keyInfo.Key;
+
+                    if (key == ConsoleKey.D0)
+                    {
+                        return;
+                    }
+                }
+            } while (loginPassed == false);
+        }
+
+        public static void Panel()
+        {
+            int option = 0;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Witaj w menu admina!");
+                Console.WriteLine("Wybierz akcję: ");
+                Console.WriteLine("1. Dodaj produkt");
+                Console.WriteLine("2. Edytuj produkt");
+                Console.WriteLine("3. Dodaj składnik");
+                Console.WriteLine("4. Edytuj składnik");
+                Console.WriteLine("-1. Wróć do menu głównego");
+                try
+                {
+                    option = int.Parse(Console.ReadLine());
+                }
+                catch
+                {
+
+                }
+            } while (option != -1);
+
+
+        }
+    }
+
     public class Pizzeria
     {
         public void WyborKategorii()
@@ -76,6 +161,7 @@ namespace Product_na_telefon
             {
                 Functions.CustomConsoleWriteLine("\n1. Napoje", "", false);
                 Functions.CustomConsoleWriteLine("2. Pizze", "", false);
+                Functions.CustomConsoleWriteLine("-1. Logowanie do panelu admina", "", false);
                 Console.Write("\nTwój wybór: ");
                 try
                 {
@@ -86,7 +172,11 @@ namespace Product_na_telefon
                     Console.WriteLine("\nPodaj liczbe!");
                 }
                 
-                if (selectedCategory != 0)
+                if (selectedCategory == -1)
+                {
+                    Admin.Login();
+                }
+                else if (selectedCategory != 0)
                 {
                     hide_menu = this.Menu(selectedCategory);
                 }
@@ -333,6 +423,11 @@ namespace Product_na_telefon
     {
         static void Main(string[] args)
         {
+            //SoundPlayer player = new SoundPlayer();
+            //player.SoundLocation = "../../../../src/data/menu.wav";
+            //player.Play();
+
+            //Console.Beep(800, 1000);
             string fileName = "../../../../src/data/menu.json";
             string menuJSON = File.ReadAllText(fileName);
             GlobalData.Menu = JsonSerializer.Deserialize<List<Product>>(menuJSON);
