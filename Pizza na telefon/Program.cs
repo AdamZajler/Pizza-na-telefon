@@ -520,7 +520,7 @@ namespace Product_na_telefon
                 {
                     Console.WriteLine("Podałeś błędne dane (płatność ~280)");
                 }
-
+                string amogus;
                 switch (GlobalData.KlientMetodaPlatnosci)
                 {
                     case 1 :
@@ -533,10 +533,10 @@ namespace Product_na_telefon
                         break;
                     case 3:
                         Console.WriteLine("wybrana metoda płatności to BLIK" +
-                                        "\nPodaj kod BLIK:");// TODO: dac to do do while zeby siciagal tylko 6 licb
-                        bledna_platnosc = true;
-                        Console.ReadLine();
-                        break;
+                                        "\nPodaj kod BLIK:");
+                        amogus = Convert.ToString(Console.ReadLine());
+                        if (amogus.Length == 6) { bledna_platnosc = true; break; }
+                        else { Console.WriteLine("Podałeś błędny kod"); break; }
                     default:
                         Console.WriteLine("Wybrana metoda płatności nie istnieje");
                         break;
@@ -599,7 +599,6 @@ namespace Product_na_telefon
         static void Main(string[] args)
         {
             SoundPlayer player = new SoundPlayer();
-            //player.SoundLocation = "Pizza na telefon/theme.wav";
             player.SoundLocation = "../../../../src/data/theme.wav";
             player.PlayLooping();
 
