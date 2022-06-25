@@ -1,0 +1,45 @@
+[
+    {
+        "IngridientID": 1,
+        "IngridientName": "sos pomidorowy",
+        "IngridientPrice": 1.00
+    },
+    {    
+        "IngridientID": 2,
+        "IngridientName": "ser zółty",
+        "IngridientPrice": 2.20
+    },
+    {
+        "IngridientID": 3,
+        "IngridientName": "ser mozzarella",
+        "IngridientPrice": 2.50
+    },
+    {    
+        "IngridientID": 4,
+        "IngridientName": "pieczarki",
+        "IngridientPrice": 3.00
+    },
+    {
+        "IngridientID": 5,
+        "IngridientName": "szynka",
+        "IngridientPrice": 3.5
+    },
+    {
+        "IngridientID": 6,
+        "IngridientName": "kurczak",
+        "IngridientPrice": 4.00
+    },
+    {
+        "IngridientID": 7,
+        "IngridientName": "oliwki",
+        "IngridientPrice": 3.00
+    },
+    {
+        "IngridientID": 8,
+        "IngridientName": "pomiddorki",
+        "IngridientPrice": 3.00
+    }
+
+    
+    
+]
