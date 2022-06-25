@@ -19,8 +19,5 @@
 	{ "Id": 18, "Name": "Sos \u015Bmietanowy", "Price": 3, "CurrencySymbol": "z\u0142" },
 	{ "Id": 19, "Name": "Cebula", "Price": 1.5, "CurrencySymbol": "z\u0142" },
 	{ "Id": 20, "Name": "Oliwa Czosnkowa", "Price": 4, "CurrencySymbol": "z\u0142" },
-	{ "Id": 21, "Name": "Oliwa Chilli", "Price": 4, "CurrencySymbol": "z\u0142" },
-	{ "Id": 22, "Name": "Kapa", "Price": 123.32, "CurrencySymbol": "z\u0142" },
-	{ "Id": 23, "Name": "-1", "Price": 99.99, "CurrencySymbol": "z\u0142" },
-	{ "Id": 24, "Name": "kapakkkkkkkk", "Price": 70, "CurrencySymbol": "cipa" }
+	{ "Id": 21, "Name": "Oliwa Chilli", "Price": 4, "CurrencySymbol": "z\u0142" }
 ]
