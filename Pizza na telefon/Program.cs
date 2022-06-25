@@ -347,7 +347,6 @@ namespace Product_na_telefon
             Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ", "green", true);
             Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia\n", "", true);
             Functions.CustomConsoleWriteLine("Wpisz numer aby otworzyć kategorie menu", "red", true);
-            this.ChooseCategory();
         }
         public string CheckCategoryString(string category_name)
         {
@@ -394,11 +393,12 @@ namespace Product_na_telefon
                 if (display_choice == "0")
                 {
                     Console.WriteLine("W ciągu (3/s) znajdziesz się w głównym menu");
-                    Thread.Sleep(3000); 
+                    Thread.Sleep(3000);
                     Console.Clear();
                     display_logic = true;
                 }
-                else if (display_choice == "1")
+                else if (display_choice == "1" && GlobalData.Order.Count <= 0) { Console.WriteLine("Nie można usuwać z pustego zamówienia. Trwa powrót do menu"); Thread.Sleep(3000); display_logic = true; Console.Clear(); }
+                else if (display_choice == "1" && GlobalData.Order.Count > 0)
                 {
                     Console.WriteLine("Który element chcesz usunąć?");
                     j = Convert.ToInt32(Console.ReadLine());
@@ -406,7 +406,14 @@ namespace Product_na_telefon
                 }
                 else Console.WriteLine("Wybrałeś błędną ocje");
             } while(display_logic!=true);
-            this.Greeting();
+            this.GreetingAntiBug();
+        }
+        public void GreetingAntiBug()
+        {
+            Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ", "green", true);
+            Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia\n", "", true);
+            Functions.CustomConsoleWriteLine("Wpisz numer aby otworzyć kategorie menu", "red", true);
+            this.ChooseCategory();
         }
         public int ChooseCategory()
         {
@@ -512,7 +519,6 @@ namespace Product_na_telefon
         public Pizzeria()
         {
             this.Greeting();
-            //this.Szczegoly_Zamowienia();
 
             int selected_category = this.ChooseCategory();
 
@@ -654,19 +660,21 @@ namespace Product_na_telefon
             Functions.CustomConsoleWrite("UWAGI:", "green", false);
             Console.WriteLine(" " + GlobalData.KlientUwagiDoZamowienia + "\n");
             Functions.CustomConsoleWrite("METODA PŁATNOŚCI", "blue", false);
+
+            //wybrana metoda płatności
             switch (GlobalData.KlientMetodaPlatnosci)
             {
                 case 1:
-                    Console.WriteLine(" wybrana metoda płatności to płatność kartą");
+                    Console.WriteLine(" to płatność kartą");
                     break;
                 case 2:
-                    Console.WriteLine(" wybrana metoda płatności to płatność gotówką przy odbiorze");
+                    Console.WriteLine(" to płatność gotówką przy odbiorze");
                     break;
                 case 3 :
-                    Console.WriteLine(" wybrana metoda płatności to BLIK");
+                    Console.WriteLine(" to BLIK");
                     break;
                 default:
-                    Console.WriteLine(" Wybrana metoda nie istnieje mimo że została zaakceptowana");
+                    Console.WriteLine(" nie istnieje mimo że została zaakceptowana");
                     break;
             }
             string morb="";
@@ -686,7 +694,7 @@ namespace Product_na_telefon
             int a = rad.Next(45, 65);
             Console.Clear();
             Console.WriteLine("Dziekujemy za złozenie zamowienia." +
-                "\nTwoje zamówienie będzie gotowe za około {0}",a);
+                "\nTwoje zamówienie będzie gotowe za około {0} minut",a);
             Console.WriteLine("\nNaciśnij dowolny przycisk aby zakończyć program");
             Console.ReadKey();
             this.KoniecProgramu();
