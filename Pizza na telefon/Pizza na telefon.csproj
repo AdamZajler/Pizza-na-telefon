@@ -12,11 +12,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="theme.wav" />
+    <None Remove="theme1.wav" />
+    <None Remove="theme2.wav" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="theme.wav">
+    <Content Include="theme1.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="theme2.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

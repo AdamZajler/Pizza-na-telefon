@@ -1,108 +1,23 @@
 [
-    {
-        "IngridientID": 1,
-        "IngridientName": "Sos pomidorowy",
-        "IngridientPrice": 1.00
-    },
-    {    
-        "IngridientID": 2,
-        "IngridientName": "Ser zółty",
-        "IngridientPrice": 2.20
-    },
-    {
-        "IngridientID": 3,
-        "IngridientName": "Ser mozzarella",
-        "IngridientPrice": 2.50
-    },
-    {    
-        "IngridientID": 4,
-        "IngridientName": "Pieczarki",
-        "IngridientPrice": 3.00
-    },
-    {
-        "IngridientID": 5,
-        "IngridientName": "Szynka",
-        "IngridientPrice": 3.5
-    },
-    {
-        "IngridientID": 6,
-        "IngridientName": "Kurczak",
-        "IngridientPrice": 4.00
-    },
-    {
-        "IngridientID": 7,
-        "IngridientName": "Oliwki",
-        "IngridientPrice": 3.00
-    },
-    {
-        "IngridientID": 8,
-        "IngridientName": "Pomiddorki",
-        "IngridientPrice": 3.00
-    },
-    { 
-        "IngridientID": 9,
-        "IngridientName": "Rukola",
-        "IngridientPrice": 3.00
-    },
-    {
-        "IngridientID": 10,
-        "IngridientName": "Pomidory suszone",
-        "IngridientPrice": 2.99
-    },
-    {
-        "IngridientID": 11,
-        "IngridientName": "Kukurydza",
-        "IngridientPrice": 1.5
-    },
-    {
-        "IngridientID": 12,
-        "IngridientName": "Kapary",
-        "IngridientPrice": 2.99
-    },
-    {
-        "IngridientID": 13,
-        "IngridientName": "Mięso mielone",
-        "IngridientPrice": 4.00
-    },
-    {
-        "IngridientID": 14,
-        "IngridientName": "Salami",
-        "IngridientPrice": 4.00
-    },
-    {
-        "IngridientID":15,
-        "IngridientName": "Boczek",
-        "IngridientPrice": 3.00
-    },
-    {
-        "IngridientID": 16,
-        "IngridientName": "Ananas",
-        "IngridientPrice": 5.00
-    },
-    {
-        "IngridientID": 17,
-        "IngridientName": "Sos czosnkowy",
-        "IngridientPrice": 3.00
-    },
-    {
-        "IngridientID": 18,
-        "IngridientName": "Sos śmietanowy",
-        "IngridientPrice": 3.00
-    },
-    {
-        "IngridientID":19,
-        "IngridientName" : "Cebula",
-        "IngridientPrice" : 1.50
-        
-    },
-    {
-        "IngridientID": 20,
-        "IngridientName": "Oliwa Czosnkowa",
-        "IngridientPrice": 4.00
-    },
-    {
-        "IngridientID": 21,
-        "IngridientName": "Oliwa Chilli",
-        "IngridientPrice": 4.00
-    }
+	{ "Id": 1, "Name": "Sos pomidorowy", "Price": 1, "CurrencySymbol": "z\u0142" },
+	{ "Id": 2, "Name": "Ser z\u00F3\u0142ty", "Price": 2.2, "CurrencySymbol": "z\u0142" },
+	{ "Id": 3, "Name": "Ser mozzarella", "Price": 2.5, "CurrencySymbol": "z\u0142" },
+	{ "Id": 4, "Name": "Pieczarki", "Price": 3, "CurrencySymbol": "z\u0142" },
+	{ "Id": 5, "Name": "Szynka", "Price": 3.5, "CurrencySymbol": "z\u0142" },
+	{ "Id": 6, "Name": "Kurczak", "Price": 4, "CurrencySymbol": "z\u0142" },
+	{ "Id": 7, "Name": "Oliwki", "Price": 3, "CurrencySymbol": "z\u0142" },
+	{ "Id": 8, "Name": "Pomiddorki", "Price": 3, "CurrencySymbol": "z\u0142" },
+	{ "Id": 9, "Name": "Rukola", "Price": 3, "CurrencySymbol": "z\u0142" },
+	{ "Id": 10, "Name": "Pomidory suszone", "Price": 2.99, "CurrencySymbol": "z\u0142" },
+	{ "Id": 11, "Name": "Kukurydza", "Price": 1.5, "CurrencySymbol": "z\u0142" },
+	{ "Id": 12, "Name": "Kapary", "Price": 2.99, "CurrencySymbol": "z\u0142" },
+	{ "Id": 13, "Name": "Mi\u0119so mielone", "Price": 4, "CurrencySymbol": "z\u0142" },
+	{ "Id": 14, "Name": "Salami", "Price": 4, "CurrencySymbol": "z\u0142" },
+	{ "Id": 15, "Name": "Boczek", "Price": 3, "CurrencySymbol": "z\u0142" },
+	{ "Id": 16, "Name": "Ananas", "Price": 5, "CurrencySymbol": "z\u0142" },
+	{ "Id": 17, "Name": "Sos czosnkowy", "Price": 3, "CurrencySymbol": "z\u0142" },
+	{ "Id": 18, "Name": "Sos \u015Bmietanowy", "Price": 3, "CurrencySymbol": "z\u0142" },
+	{ "Id": 19, "Name": "Cebula", "Price": 1.5, "CurrencySymbol": "z\u0142" },
+	{ "Id": 20, "Name": "Oliwa Czosnkowa", "Price": 4, "CurrencySymbol": "z\u0142" },
+	{ "Id": 21, "Name": "Oliwa Chilli", "Price": 4, "CurrencySymbol": "z\u0142" }
 ]
