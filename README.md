@@ -12,6 +12,7 @@ Aplikacja umożliwiająca przeglądanie i zamawianie pizz przez telefon
 
 ## Funkcjonalności
 
+- Losowe piosenki w tle
 - Przeglądanie dostępnych pizz
 - Zamawianie pizzy oraz napojów
 - Przeglądanie zamówienia
@@ -19,6 +20,13 @@ Aplikacja umożliwiająca przeglądanie i zamawianie pizz przez telefon
 - Dodawanie nowych pizz
 - Dodawnaie nowych składników
 - Edycja składników
+
+## Wymagania
+
+| Element | Wersja     | 
+| :-------- | :------- | 
+| `.NET Core`      | `3.1` | 
+| `Głośniki / Dźwięk`      | `Włączone` | 
 
 ## Logowanie do panelu administracyjnego w aplikacji
 Login: `kobe`
