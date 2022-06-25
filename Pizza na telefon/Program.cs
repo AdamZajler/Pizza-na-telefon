@@ -150,54 +150,53 @@ namespace Product_na_telefon
         }
         public static void Login()
         {
-            Panel();
-            //bool loginPassed = false;
-            //do
-            //{
-            //    Console.Clear();
-            //    Console.Write("Podaj login: ");
-            //    string login = Console.ReadLine();
-            //    Console.Write("Podaj hasło: ");
-            //    var pass = string.Empty;
+            bool loginPassed = false;
+            do
+            {
+                Console.Clear();
+                Console.Write("Podaj login: ");
+                string login = Console.ReadLine();
+                Console.Write("Podaj hasło: ");
+                var pass = string.Empty;
 
-            //    ConsoleKey key;
-            //    do
-            //    {
-            //        var keyInfo = Console.ReadKey(intercept: true);
-            //        key = keyInfo.Key;
+                ConsoleKey key;
+                do
+                {
+                    var keyInfo = Console.ReadKey(intercept: true);
+                    key = keyInfo.Key;
 
-            //        if (key == ConsoleKey.Backspace && pass.Length > 0)
-            //        {
-            //            Console.Write("\b \b");
-            //            pass = pass[0..^1];
-            //        }
-            //        else if (!char.IsControl(keyInfo.KeyChar))
-            //        {
-            //            Console.Write("*");
-            //            pass += keyInfo.KeyChar;
-            //        }
-            //    } while (key != ConsoleKey.Enter);
+                    if (key == ConsoleKey.Backspace && pass.Length > 0)
+                    {
+                        Console.Write("\b \b");
+                        pass = pass[0..^1];
+                    }
+                    else if (!char.IsControl(keyInfo.KeyChar))
+                    {
+                        Console.Write("*");
+                        pass += keyInfo.KeyChar;
+                    }
+                } while (key != ConsoleKey.Enter);
 
-            //    if (login == GlobalData.AdminLogin && pass == GlobalData.AdminPass)
-            //    {
-            //        Functions.CustomConsoleWriteLine("\n\n Poprawne hasło! Przekierowywanie...", "green", true);
-            //        Thread.Sleep(1000);
-            //        Panel();
-            //        return;
-            //    }
-            //    else
-            //    {
-            //        Functions.CustomConsoleWriteLine("\n\nLogin i hasło nie są zgodne! Wpisz '0' aby wrócić do menu głównego lub dowolny inny klawisz aby spróbować ponownie!", "red", true);
+                if (login == GlobalData.AdminLogin && pass == GlobalData.AdminPass)
+                {
+                    Functions.CustomConsoleWriteLine("\n\n Poprawne hasło! Przekierowywanie...", "green", true);
+                    Thread.Sleep(1000);
+                    Panel();
+                    return;
+                }
+                else
+                {
+                    Functions.CustomConsoleWriteLine("\n\nLogin i hasło nie są zgodne! Wpisz '0' aby wrócić do menu głównego lub dowolny inny klawisz aby spróbować ponownie!", "red", true);
 
-            //        var keyInfo = Console.ReadKey(intercept: true);
-            //        key = keyInfo.Key;
+                    var keyInfo = Console.ReadKey(intercept: true);
+                    key = keyInfo.Key;
 
-            //        if (key == ConsoleKey.D0)
-            //        {
-            //            return;
-            //        }
-            //    }
-            //} while (loginPassed == false);
+                    if (key == ConsoleKey.D0)
+                    {
+                        return;
+                    }
+                }
+            } while (loginPassed == false);
         }
         public static void Panel()
         {
@@ -205,13 +204,13 @@ namespace Product_na_telefon
             do
             {
                 Console.Clear();
-                Console.WriteLine("Witaj w menu admina!");
-                Console.WriteLine("Wybierz akcję: ");
+                AdminGreeting();
+                Console.WriteLine("\nWybierz akcję: ");
                 Console.WriteLine("1. Dodaj produkt");
                 Console.WriteLine("2. Dodaj składnik");
                 Console.WriteLine("3. Edytuj składnik");
-                Console.WriteLine("-1. Wróć do menu głównego");
-                Console.Write("Wybrana opcja: ");
+                Console.WriteLine("\n-1. Wróć do menu głównego");
+                Console.Write("\n\nWybrana opcja: ");
                 try
                 {
                     option = int.Parse(Console.ReadLine());
@@ -227,6 +226,8 @@ namespace Product_na_telefon
                     switch (option)
                     {
                         case -1:
+                            Console.Clear();
+                            Pizzeria.Greeting();
                             return;
                         case 1:
                             AddProduct();
@@ -270,7 +271,10 @@ namespace Product_na_telefon
             {
                 success = false;
                 Console.Clear();
-                Functions.CustomConsoleWriteLine("Dodawanie produktu o ID " + newProduct.Id, "", false);
+                AdminGreeting();
+                Functions.CustomConsoleWriteLine("====== Dodawanie produktu ======", "red", true);
+
+                Functions.CustomConsoleWriteLine("\n\nDodawanie produktu o ID " + newProduct.Id, "", false);
                 if (step > 0) Functions.CustomConsoleWriteLine("ID kategorii: " + newProduct.CategoryId, "", false);
                 if (step > 1) Functions.CustomConsoleWriteLine("Nazwa: " + newProduct.Name, "", false);
                 if (step > 2) Functions.CustomConsoleWriteLine("ID składników: [" + string.Join(", ", newProduct.IngredientsId) + "]", "", false);
@@ -351,11 +355,12 @@ namespace Product_na_telefon
 
                 if(step == 2)
                 {
-                    Console.WriteLine("\nPodaj ID składniku (0 aby zakończyć dodawanie składników, -1 aby anulować dodawanie produktu)");
+                    Console.WriteLine("\n\nPodaj ID składniku (0 aby zakończyć dodawanie składników, -1 aby anulować dodawanie produktu)");
                     if (ingredients.Length > 0)
                     {
                         Functions.CustomConsoleWrite("ID dodanych składników:");
                         Console.Write("[{0}]\n", string.Join(", ", ingredients));
+                        Functions.CustomConsoleWriteLine("Aby usunąć składnik wpisz ponownie jego ID", "red");
                     }
                     foreach(Ingredient Ingredient in GlobalData.Ingredients)
                     {
@@ -369,7 +374,7 @@ namespace Product_na_telefon
                         }
                     }
 
-                    Console.Write("Dodany składnik: ");
+                    Console.Write("\nDodany składnik: ");
 
                     try
                     {
@@ -424,6 +429,7 @@ namespace Product_na_telefon
                         Functions.CustomConsoleWriteLine("Podaj liczbę!", "red", false);
                         price = 0;
                         Thread.Sleep(1000);
+                        continue;
                     }
 
                     if (price == -1)
@@ -648,11 +654,15 @@ namespace Product_na_telefon
                         catch
                         {
                             Functions.CustomConsoleWriteLine("Podana cena nie jest liczbą!", "red", false);
+                            newIngredient.Price = -1;
+                            Thread.Sleep(1000);
+                            continue;
                         }
 
                         if (newIngredient.Price < 0)
                         {
                             Functions.CustomConsoleWriteLine("Nie możesz ujemna!", "red", false);
+                            Thread.Sleep(1000);
                         }
                     } while (newIngredient.Price < 0);
 
@@ -840,6 +850,7 @@ namespace Product_na_telefon
                                         {
                                             Functions.CustomConsoleWriteLine("Podana cena nie jest liczbą!", "red", false);
                                             newIngredientPrice = -1;
+                                            continue;
                                         }
 
                                         if (newIngredientPrice < 0)
@@ -923,7 +934,7 @@ namespace Product_na_telefon
         public static void PlayThemeSong()
         {
             Random rnd = new Random();
-            int song = rnd.Next(1, 3);
+            int song = rnd.Next(1, 4);
 
             SoundPlayer player = new SoundPlayer();
             player.SoundLocation = "../../../../src/data/theme" + song + ".wav";
@@ -938,11 +949,10 @@ namespace Product_na_telefon
                 Thread.Sleep(850);
             }
         }
-        public void Greeting()
+        public static void Greeting()
         {
             Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ", "green", true);
             Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia\n", "", true);
-            Functions.CustomConsoleWriteLine("Wpisz numer aby otworzyć kategorie menu", "red", true);
         }
 
         public string CheckCategoryString(string category_name)
@@ -983,34 +993,48 @@ namespace Product_na_telefon
                 {
                     Console.WriteLine("{0}. {1} {2}{3}", ++i, single_product.Name, single_product.Price, single_product.CurrencySymbol);
                 }
-                Console.WriteLine("Wybierz '0' aby wrócić do menu głównego" +
+                Console.WriteLine("\nWybierz '0' aby wrócić do menu głównego" +
                                 "\nWybierz '1' aby usunąc element zamówienia");
                 display_choice = Console.ReadLine();
 
                 if (display_choice == "0")
                 {
-                    Console.WriteLine("W ciągu (3/s) znajdziesz się w głównym menu");
-                    Thread.Sleep(3000);
                     Console.Clear();
                     display_logic = true;
                 }
                 else if (display_choice == "1" && GlobalData.Order.Count <= 0) { Console.WriteLine("Nie można usuwać z pustego zamówienia. Trwa powrót do menu"); Thread.Sleep(3000); display_logic = true; Console.Clear(); }
                 else if (display_choice == "1" && GlobalData.Order.Count > 0)
                 {
-                    Console.WriteLine("Który element chcesz usunąć?");
-                    j = Convert.ToInt32(Console.ReadLine());
-                    GlobalData.Order.RemoveAt(--j);
+                    bool isDeleteCorrect = false;
+                    do
+                    {
+                        Console.WriteLine("Który element chcesz usunąć?");
+                        try
+                        {
+                            j = Convert.ToInt32(Console.ReadLine());
+                        }
+                        catch
+                        {
+                            Functions.CustomConsoleWriteLine("Podaj liczbę!", "red", false);
+                            continue;
+                        }
+
+                        if (j <= 0 || j > GlobalData.Order.Count)
+                        {
+                            Functions.CustomConsoleWriteLine("Podano nieprawidłowy indeks!", "red", false);
+                        }
+                        else
+                        {
+                            Functions.CustomConsoleWriteLine("Usunięto pozycję " + j, "green", false);
+                            GlobalData.Order.RemoveAt(--j);
+                            isDeleteCorrect = true;
+                            Thread.Sleep(1000);
+                        }
+                    } while (isDeleteCorrect == false);
                 }
-                else Console.WriteLine("Wybrałeś błędną ocje");
+                else Console.WriteLine("Wybrałeś błędną opcje");
             } while(display_logic!=true);
-            this.GreetingAntiBug();
-        }
-        public void GreetingAntiBug()
-        {
-            Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ", "green", true);
-            Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia\n", "", true);
-            Functions.CustomConsoleWriteLine("Wpisz numer aby otworzyć kategorie menu", "red", true);
-            this.ChooseCategory();
+            Greeting();
         }
         public int ChooseCategory()
         {
@@ -1043,7 +1067,6 @@ namespace Product_na_telefon
                 if (selectedCategory == -1)
                 {
                     Admin.Login();
-                    //Admin.Panel();
                 }
                 else if(selectedCategory_string == "0" && GlobalData.Order.Count > 0)
                 {
@@ -1078,6 +1101,8 @@ namespace Product_na_telefon
         }
         public bool Menu(int selectedCategory)
         {
+            Console.Clear();
+            Greeting();
             bool menu_function_success = false;
 
             void displayCategory(int category)
@@ -1116,7 +1141,7 @@ namespace Product_na_telefon
         }
         public Pizzeria()
         {
-            this.Greeting();
+            Greeting();
 
             int selected_category = this.ChooseCategory();
 
@@ -1124,9 +1149,7 @@ namespace Product_na_telefon
             int value = -1;
             bool is_choosing_position = true;
 
-            Console.Write("\nWybierz '0' aby powrócić do kategori" +
-                          "\nWybierz '250' aby złożyć zamówienie" +
-                          "\nWybierz '300' aby zobaczyć aktualne zamówienie");
+            Console.Write("\nWybierz '0' aby powrócić do kategorii");
             while(is_choosing_position != false)
             {
                 var selected_category_products = GlobalData.Menu.Where(i => i.CategoryId == selected_category).ToList();
@@ -1150,7 +1173,7 @@ namespace Product_na_telefon
                 else if(value_string == "0")
                 {
                     Console.Clear();
-                    this.Greeting();
+                    Greeting();
                     selected_category = this.ChooseCategory();
                 }
                 else if(value_string == "250")
@@ -1213,7 +1236,7 @@ namespace Product_na_telefon
                 }
                 catch
                 {
-                    Console.WriteLine("Podałeś błędne dane (płatność ~280)");
+                    Console.WriteLine("Podałeś błędne dane");
                 }
                 string amogus;
                 switch (GlobalData.KlientMetodaPlatnosci)
@@ -1239,8 +1262,9 @@ namespace Product_na_telefon
 
             } while (bledna_platnosc == false);
 
-            Console.WriteLine("Dane przyjęte. Trwa przekierowanie do Podsumowania (5s)"); 
-            Thread.Sleep(5000); 
+            Console.Write("\nDane przyjęte. Trwa przekierowanie do Podsumowania "); 
+            this.Loader();
+            Thread.Sleep(3000);
             this.Podsumowanie();
         }
 
@@ -1278,11 +1302,17 @@ namespace Product_na_telefon
             string morb="";
             do
             {
-                Functions.CustomConsoleWriteLine("Czy dane się zgadzają? (Y/N)", "purple", false);
+                Functions.CustomConsoleWrite("\nCzy dane się zgadzają? (Y/N): ", "purple", false);
                 morb = Console.ReadLine();
                 morb.ToLower();
             } while (morb != "y" && morb != "n");
-            if (morb == "n") { Console.WriteLine("Następuje przekierowanie do ponownego wpisywania danych (5s)");Thread.Sleep(5000); this.Szczegoly_Zamowienia(); }
+
+            if (morb == "n") { 
+                Console.WriteLine("Następuje przekierowanie do ponownego wpisywania danych\n");
+                this.Loader();
+                Thread.Sleep(3000);
+                this.Szczegoly_Zamowienia(); 
+            }
             this.ThankYouPage();
         }
 
@@ -1300,7 +1330,7 @@ namespace Product_na_telefon
         public void KoniecProgramu()
         {
             Console.WriteLine("Koniec programu");
-            return;
+            Environment.Exit(0);
         }
     }
     class Program
@@ -1315,9 +1345,6 @@ namespace Product_na_telefon
             GlobalData.Menu = JsonSerializer.Deserialize<List<Product>>(menuJSON);
             GlobalData.Ingredients = JsonSerializer.Deserialize<List<Ingredient>>(ingredientsJSON);
             var pizzeria = new Pizzeria();
-             
-
-            // TODO: DODAĆ UMERY ALBUMÓW DO README
         }
     }
 }
