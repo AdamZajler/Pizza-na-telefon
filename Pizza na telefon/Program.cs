@@ -491,7 +491,7 @@ namespace Product_na_telefon
         }
         public Pizzeria()
         {
-            this.Greeting();
+            this.Szczegoly_Zamowienia();
 
             int selected_category = this.ChooseCategory();
 
@@ -536,16 +536,30 @@ namespace Product_na_telefon
         public void Szczegoly_Zamowienia()
         {
             Console.WriteLine("czyszczenie + przejscie do zamowienia' czyszczenie 3s, może jakiś loader?");
-            //Thread.Sleep(3000);
             Console.Clear();
-            Functions.CustomConsoleWriteLine("Wprowadź swoje imie","Green", false);
-            GlobalData.KlientImie = Console.ReadLine();
-            Functions.CustomConsoleWriteLine("Wprowadź swoje nazwisko","Green", false);
-            GlobalData.KlientNazwisko = Console.ReadLine();
-            Functions.CustomConsoleWriteLine("Wprowadź miasto, ulice i numer domu/mieszkania","Green", false);
-            GlobalData.KlientAdres = Console.ReadLine();
+
+            do 
+            {
+                Functions.CustomConsoleWriteLine("Wprowadź swoje imie", "Green", false);
+                GlobalData.KlientImie = Console.ReadLine();
+                if (GlobalData.KlientImie == "") Console.WriteLine("Brak danych.\nSpróbuj ponownie.");
+            }while(GlobalData.KlientImie=="");
+            do
+            {
+                Functions.CustomConsoleWriteLine("Wprowadź swoje nazwisko", "Green", false);
+                GlobalData.KlientNazwisko = Console.ReadLine();
+                if (GlobalData.KlientNazwisko == "") Console.WriteLine("Brak danych.\nSpróbuj ponownie.");
+            } while (GlobalData.KlientNazwisko == "");
+            do
+            {
+                Functions.CustomConsoleWriteLine("Wprowadź miasto, ulice i numer domu/mieszkania", "Green", false);
+                GlobalData.KlientAdres = Console.ReadLine();
+                if (GlobalData.KlientAdres == "") Console.WriteLine("Brak danych.\nSpróbuj ponownie.");
+            } while (GlobalData.KlientAdres == "");
+
             Functions.CustomConsoleWriteLine("Uwagi do zamówienia", "Green", false);
             GlobalData.KlientUwagiDoZamowienia = Console.ReadLine();
+
             Functions.CustomConsoleWriteLine("Dostępne metody płatności:", "Green", false);
             Console.WriteLine("\n1.Karta płatnicza" +
                               "\n2.Płatność gotówką przy odbiorze" +
@@ -586,18 +600,14 @@ namespace Product_na_telefon
 
             } while (bledna_platnosc == false);
 
-
-            Console.WriteLine("Naciśnij dowolny klawisz aby przejśc do podsumowania");
-            Console.ReadKey();
+            Console.WriteLine("Dane przyjęte. Trwa przekierowanie do Podsumowania (5s)"); 
+            Thread.Sleep(5000); 
             this.Podsumowanie();
         }
 
         public void Podsumowanie()
         {
-            Console.WriteLine("czyszczenie 3s, może jakiś loader?");
-            //Thread.Sleep(3000);
-            //Console.Clear();
-
+            Console.Clear();
             Functions.CustomConsoleWrite("Czy twoje dane się zgadzają?\n","pink",true);
 
             Functions.CustomConsoleWrite("IMIE:", "red", false);
@@ -609,8 +619,22 @@ namespace Product_na_telefon
             Functions.CustomConsoleWrite("UWAGI:", "green", false);
             Console.WriteLine(" " + GlobalData.KlientUwagiDoZamowienia + "\n");
             Functions.CustomConsoleWrite("METODA PŁATNOŚCI", "blue", false);
-            Console.WriteLine(" " + GlobalData.KlientMetodaPlatnosci + "\n");
-
+            //Console.WriteLine(" " + GlobalData.KlientMetodaPlatnosci + "\n");
+            switch (GlobalData.KlientMetodaPlatnosci)
+            {
+                case 1:
+                    Console.WriteLine(" wybrana metoda płatności to płatność kartą");
+                    break;
+                case 2:
+                    Console.WriteLine(" wybrana metoda płatności to płatność gotówką przy odbiorze");
+                    break;
+                case 3 :
+                    Console.WriteLine(" wybrana metoda płatności to BLIK");
+                    break;
+                default:
+                    Console.WriteLine(" Wybrana metoda nie istnieje mimo że została zaakceptowana");
+                    break;
+            }
             string morb="";
             do
             {
@@ -629,11 +653,6 @@ namespace Product_na_telefon
             Console.Clear();
             Console.WriteLine("Dziekujemy za złozenie zamowienia." +
                 "\nTwoje zamówienie będzie gotowe za około {0}",a);
-        }
-        public void KoniecProgramu()
-        {
-            Console.WriteLine("Koniec programu");
-            return;
         }
     }
     class Program
@@ -654,6 +673,9 @@ namespace Product_na_telefon
             //Console.WriteLine("Załadowano {0} pozycji w menu", GlobalData.Menu.Count);
             //var functions = new Functions();
             var pizzeria = new Pizzeria();
+             
+
+            // TODO: DODAĆ UMERY ALBUMÓW DO README
         }
     }
 }
