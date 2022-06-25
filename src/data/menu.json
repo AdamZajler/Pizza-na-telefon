@@ -4,10 +4,11 @@
 	{ "Id": 3, "Name": "Sprite", "Price": 7, "CurrencySymbol": "zł", "CategoryId": 1 },
 	{ "Id": 4, "Name": "Woda gazowana", "Price": 7, "CurrencySymbol": "zł", "CategoryId": 1 },
 	{ "Id": 5, "Name": "Woda niegazowana", "Price": 7, "CurrencySymbol": "zł", "CategoryId": 1 },
-	{ "Id": 6, "Name": "Margherita", "Price": 18, "CurrencySymbol": "zł", "CategoryId": 2, "Ingridients" : [1,2,5] },
-	{ "Id": 7, "Name": "Neapolitana", "Price": 22, "CurrencySymbol": "zł", "CategoryId": 2 },
-	{ "Id": 8, "Name": "Carbonara", "Price": 25, "CurrencySymbol": "zł", "CategoryId": 2 },
-	{ "Id": 9, "Name": "Mexico", "Price": 30, "CurrencySymbol": "zł", "CategoryId": 2 },
-	{ "Id": 10, "Name": "Rukola", "Price": 35, "CurrencySymbol": "zł", "CategoryId": 2 },
-	{ "Id": 11, "Name": "Hawaii", "Price": 25, "CurrencySymbol": "zł", "CategoryId": 2 }
+	{ "Id": 6, "Name": "Margherita", "Price": 18, "CurrencySymbol": "zł", "CategoryId": 2, "Ingridients" : [1,2,14] },
+	{ "Id": 7, "Name": "Neapolitana", "Price": 22, "CurrencySymbol": "zł", "CategoryId": 2,"Ingridients" : [1,3,4,5,8] },
+	{ "Id": 8, "Name": "Carbonara", "Price": 25, "CurrencySymbol": "zł", "CategoryId": 2,"Ingridients" : [18,3,15,19] },
+	{ "Id": 9, "Name": "Mexico", "Price": 30, "CurrencySymbol": "zł", "CategoryId": 2, "Ingridients" : [1,2,6,13,11,19] },
+	{ "Id": 10, "Name": "Rukola", "Price": 35, "CurrencySymbol": "zł", "CategoryId": 2, "Ingridients" : [1,3,4,6,7,10,9,12] },
+	{ "Id": 11, "Name": "Hawaii", "Price": 25, "CurrencySymbol": "zł", "CategoryId": 2, "Ingridients" : [1,2,6,8,11,16] },
+	{ "Id": 12, "Name": "Attuale", "Price": 25, "CurrencySymbol": "zł", "CategoryId": 2, "Ingridients" : [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,19,17] }
 ]
