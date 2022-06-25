@@ -26,11 +26,17 @@ namespace Product_na_telefon
         public int[] IngredientsId { get; set; }
         public string CurrencySymbol { get; set; }
     }
-    public class Ingredient
+    interface IIngredient
     {
-        public int IngredientId { get; set; }
-        public string IngredientName { get; set; }
-        public int[] IngredientPrice { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public float Price { get; set; }
+    }
+    public class Ingredient : IIngredient
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public float Price { get; set; }
     }
     public static class GlobalData
     {
@@ -134,57 +140,61 @@ namespace Product_na_telefon
     }
     public class Admin
     {
+        public static void AdminGreeting()
+        {
+            Functions.CustomConsoleWriteLine("====== Panel Administracyjny ======", "red", true);
+        }
         public static void Login()
         {
-            bool loginPassed = false;
-            do
-            {
-                Console.Clear();
-                Console.Write("Podaj login: ");
-                string login = Console.ReadLine();
-                Console.Write("Podaj hasło: ");
-                var pass = string.Empty;
+            Panel();
+            //bool loginPassed = false;
+            //do
+            //{
+            //    Console.Clear();
+            //    Console.Write("Podaj login: ");
+            //    string login = Console.ReadLine();
+            //    Console.Write("Podaj hasło: ");
+            //    var pass = string.Empty;
 
-                ConsoleKey key;
-                do
-                {
-                    var keyInfo = Console.ReadKey(intercept: true);
-                    key = keyInfo.Key;
+            //    ConsoleKey key;
+            //    do
+            //    {
+            //        var keyInfo = Console.ReadKey(intercept: true);
+            //        key = keyInfo.Key;
 
-                    if (key == ConsoleKey.Backspace && pass.Length > 0)
-                    {
-                        Console.Write("\b \b");
-                        pass = pass[0..^1];
-                    }
-                    else if (!char.IsControl(keyInfo.KeyChar))
-                    {
-                        Console.Write("*");
-                        pass += keyInfo.KeyChar;
-                    }
-                } while (key != ConsoleKey.Enter);
+            //        if (key == ConsoleKey.Backspace && pass.Length > 0)
+            //        {
+            //            Console.Write("\b \b");
+            //            pass = pass[0..^1];
+            //        }
+            //        else if (!char.IsControl(keyInfo.KeyChar))
+            //        {
+            //            Console.Write("*");
+            //            pass += keyInfo.KeyChar;
+            //        }
+            //    } while (key != ConsoleKey.Enter);
 
-                if (login == GlobalData.AdminLogin && pass == GlobalData.AdminPass)
-                {
-                    Functions.CustomConsoleWriteLine("\n\n Poprawne hasło! Przekierowywanie...", "green", true);
-                    Thread.Sleep(1000);
-                    Panel();
-                    return;
-                }
-                else
-                {
-                    Functions.CustomConsoleWriteLine("\n\nLogin i hasło nie są zgodne! Wpisz '0' aby wrócić do menu głównego lub dowolny inny klawisz aby spróbować ponownie!", "red", true);
+            //    if (login == GlobalData.AdminLogin && pass == GlobalData.AdminPass)
+            //    {
+            //        Functions.CustomConsoleWriteLine("\n\n Poprawne hasło! Przekierowywanie...", "green", true);
+            //        Thread.Sleep(1000);
+            //        Panel();
+            //        return;
+            //    }
+            //    else
+            //    {
+            //        Functions.CustomConsoleWriteLine("\n\nLogin i hasło nie są zgodne! Wpisz '0' aby wrócić do menu głównego lub dowolny inny klawisz aby spróbować ponownie!", "red", true);
 
-                    var keyInfo = Console.ReadKey(intercept: true);
-                    key = keyInfo.Key;
+            //        var keyInfo = Console.ReadKey(intercept: true);
+            //        key = keyInfo.Key;
 
-                    if (key == ConsoleKey.D0)
-                    {
-                        return;
-                    }
-                }
-            } while (loginPassed == false);
+            //        if (key == ConsoleKey.D0)
+            //        {
+            //            return;
+            //        }
+            //    }
+            //} while (loginPassed == false);
         }
-
         public static void Panel()
         {
             int option = 0;
@@ -237,7 +247,6 @@ namespace Product_na_telefon
 
             return;
         }
-
         public static void AddProduct()
         {
             int option = 0, step = 0;
@@ -315,15 +324,86 @@ namespace Product_na_telefon
                 if (success) step++;
             } while (step < 5);
         }
-
         public static void EditProduct()
         {
 
         }
 
+        public static void SaveIngredients()
+        {
+            string ingredientsPath = "../../../../src/data/ingredients.json";
+            string ingredients = JsonSerializer.Serialize(GlobalData.Ingredients);
+            File.WriteAllText(ingredientsPath, ingredients);
+            Functions.CustomConsoleWriteLine("\nDodano składnik!", "green", false);
+        }
         public static void AddIngredient()
         {
+            bool next_ingredient = true;
+            do
+            {
+                Console.Clear();
+                AdminGreeting();
+                Functions.CustomConsoleWriteLine("====== Dodawanie składnika ======", "red", true);
 
+                Ingredient newIngredient = new Ingredient();
+                newIngredient.Id = GlobalData.Ingredients.Max(i => i.Id) + 1;
+                Functions.CustomConsoleWriteLine("Dodawanie dodatku o ID " + newIngredient.Id, "", false);
+
+                newIngredient.Name = "";
+                newIngredient.Price = 0;
+                bool ingredient_correct = false;
+                do
+                {
+                    do
+                    {
+                        Functions.CustomConsoleWrite("\nPodaj nazwę dodatku: ");
+                        newIngredient.Name = Console.ReadLine();
+
+                        if (newIngredient.Name == "")
+                        {
+                            Functions.CustomConsoleWriteLine("Nie możesz wpisać pustej nazwy skladnika!", "red", false);
+                        }
+                    } while (newIngredient.Name == "");
+
+                    do
+                    {
+                        Functions.CustomConsoleWrite("\nPodaj cene dodatku: ");
+                        try
+                        {
+                            newIngredient.Price = float.Parse(Console.ReadLine());
+                        }
+                        catch
+                        {
+                            Functions.CustomConsoleWriteLine("Podana cena nie jest liczbą!", "red", false);
+                        }
+
+                        if (newIngredient.Price < 0)
+                        {
+                            Functions.CustomConsoleWriteLine("Nie możesz ujemna!", "red", false);
+                        }
+                    } while (newIngredient.Price < 0);
+
+                    Functions.CustomConsoleWriteLine("\nDane nowego dodatku: ");
+                    Console.WriteLine("Id: {0}", newIngredient.Id);
+                    Console.WriteLine("Nazwa: {0}", newIngredient.Name);
+                    Console.WriteLine("Cena: {0}", newIngredient.Price);
+
+                    Functions.CustomConsoleWrite("\nCzy podane dane są prawidłowe? (Y/N):  ", "", false);
+                    string ing_correct = Console.ReadLine().ToLower();
+                    ingredient_correct = ing_correct == "y" ? true : false;
+                } while (ingredient_correct == false);
+
+                GlobalData.Ingredients.Add(newIngredient);
+                SaveIngredients();
+
+                Functions.CustomConsoleWrite("\nCzy chcesz dodać kolejny składnik? (Y/N):  ");
+                string next_ing = Console.ReadLine().ToLower();
+                next_ingredient = next_ing == "y" ? true : false;
+            } while (next_ingredient == true);
+            
+
+            Functions.CustomConsoleWriteLine("\nNaciśnij dowolny przycisk aby wyjść z dodawania składniku.");
+            Console.ReadKey();
         }
 
         public static void EditIngredient()
