@@ -491,7 +491,8 @@ namespace Product_na_telefon
         }
         public Pizzeria()
         {
-            this.Szczegoly_Zamowienia();
+            this.Greeting();
+            //this.Szczegoly_Zamowienia();
 
             int selected_category = this.ChooseCategory();
 
@@ -499,7 +500,9 @@ namespace Product_na_telefon
             int value = -1;
             bool is_choosing_position = true;
 
-            Console.Write("\nWybierz pozycje ('0' powrót do kategori)");
+            Console.Write("\nWybierz '0' aby powrócić do kategori" +
+                          "\nWybierz '250' aby złożyć zamówienie" +
+                          "\nWybierz '300' aby zobaczyć aktualne zamówienie");
             while(is_choosing_position != false)
             {
                 var selected_category_products = GlobalData.Menu.Where(i => i.CategoryId == selected_category).ToList();
@@ -525,6 +528,18 @@ namespace Product_na_telefon
                     Console.Clear();
                     this.Greeting();
                     selected_category = this.ChooseCategory();
+                }
+                else if(value_string == "250")
+                {
+                    Console.WriteLine("Trwa przechodzenie do szczegółów zamównienia (3s)");
+                    Thread.Sleep(3000);
+                    this.Szczegoly_Zamowienia();
+                }
+                else if (value_string == "300")
+                {
+                    Console.WriteLine("Trwa przechodzenie do okna przeglądania zamównienia (3s)");
+                    Thread.Sleep(3000);
+                    this.DisplayOrder();
                 }
                 else
                 {
@@ -619,7 +634,6 @@ namespace Product_na_telefon
             Functions.CustomConsoleWrite("UWAGI:", "green", false);
             Console.WriteLine(" " + GlobalData.KlientUwagiDoZamowienia + "\n");
             Functions.CustomConsoleWrite("METODA PŁATNOŚCI", "blue", false);
-            //Console.WriteLine(" " + GlobalData.KlientMetodaPlatnosci + "\n");
             switch (GlobalData.KlientMetodaPlatnosci)
             {
                 case 1:
@@ -653,6 +667,14 @@ namespace Product_na_telefon
             Console.Clear();
             Console.WriteLine("Dziekujemy za złozenie zamowienia." +
                 "\nTwoje zamówienie będzie gotowe za około {0}",a);
+            Console.WriteLine("\nNaciśnij dowolny przycisk aby zakończyć program");
+            Console.ReadKey();
+            this.KoniecProgramu();
+        }
+        public void KoniecProgramu()
+        {
+            Console.WriteLine("Koniec programu");
+            return;
         }
     }
     class Program
