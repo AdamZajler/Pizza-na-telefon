@@ -293,8 +293,10 @@ namespace Product_na_telefon
     {
         public void Greeting()
         {
-            Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ඞ", "green", true);
-            Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
+            Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ", "green", true);
+            Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia\n", "", true);
+            Functions.CustomConsoleWriteLine("Wpisz numer aby otworzyć kategorie menu", "red", true);
+
         }
         public string CheckCategoryString(string category_name)
         {
@@ -342,11 +344,6 @@ namespace Product_na_telefon
             string selectedCategory_string = "0";
             do
             {
-                Console.Clear();
-                Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ඞ", "green", true);
-                Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
-                //Thread.Sleep(2500); //przerwa w wykonywaniu kodu na 2.5s;
-
                 Functions.CustomConsoleWriteLine("\n1. Napoje", "", false);
                 Functions.CustomConsoleWriteLine("2. Pizze", "", false);
 
