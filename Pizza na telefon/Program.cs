@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.IO;
 using System.Linq;
+using System.Media;
 
 namespace Product_na_telefon
 {
@@ -35,6 +36,7 @@ namespace Product_na_telefon
     {
         public static List<Product> Menu = new List<Product>();
         public static List<Product> Order = new List<Product>();
+        public static List<Ingredient> Ingredients = new List<Ingredient>();
         public static string KlientImie;
         public static string KlientNazwisko;
         public static string KlientAdres;
@@ -597,14 +599,17 @@ namespace Product_na_telefon
     {
         static void Main(string[] args)
         {
-            //SoundPlayer player = new SoundPlayer();
-            //player.SoundLocation = "../../../../src/data/menu.wav";
-            //player.Play();
+            SoundPlayer player = new SoundPlayer();
+            player.SoundLocation = "../../../../src/data/theme.wav";
+            player.PlayLooping();
 
             //Console.Beep(800, 1000);
-            string fileName = "../../../../src/data/menu.json";
-            string menuJSON = File.ReadAllText(fileName);
+            string menuPath = "../../../../src/data/menu.json";
+            string menuJSON = File.ReadAllText(menuPath);
+            string ingredientsPath = "../../../../src/data/ingredients.json";
+            string ingredientsJSON = File.ReadAllText(ingredientsPath);
             GlobalData.Menu = JsonSerializer.Deserialize<List<Product>>(menuJSON);
+            GlobalData.Ingredients = JsonSerializer.Deserialize<List<Ingredient>>(ingredientsJSON);
             //Console.WriteLine("Załadowano {0} pozycji w menu", GlobalData.Menu.Count);
             //var functions = new Functions();
             var pizzeria = new Pizzeria();
