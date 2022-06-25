@@ -3,6 +3,7 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.IO;
+using System.Linq;
 //using System.Media;
 //using System.ComponentModel;
 
@@ -26,7 +27,7 @@ namespace Product_na_telefon
     public static class GlobalData
     {
         public static List<Product> Menu = new List<Product>();
-        public static List<int> Order = new List<int>();
+        public static List<Product> Order = new List<Product>();
         public static string KlientImie;
         public static string KlientNazwisko;
         public static string KlientAdres;
@@ -34,7 +35,6 @@ namespace Product_na_telefon
         public static int KlientMetodaPlatnosci;
         public static string AdminLogin = "kobe";
         public static string AdminPass = "technik2";
-
     };
 
     public static class Functions
@@ -137,16 +137,136 @@ namespace Product_na_telefon
                 Console.WriteLine("3. Dodaj składnik");
                 Console.WriteLine("4. Edytuj składnik");
                 Console.WriteLine("-1. Wróć do menu głównego");
+                Console.Write("Wybrana opcja: ");
                 try
                 {
                     option = int.Parse(Console.ReadLine());
                 }
                 catch
                 {
+                    Console.WriteLine("Podaj liczbę!");
+                    option = 0;
+                }
 
+                if(option != 0 )
+                {
+                    switch (option)
+                    {
+                        case -1:
+                            return;
+                        case 1:
+                            AddProduct();
+                            break;
+                        case 2:
+                            EditProduct();
+                            break;
+                        case 3:
+                            AddIngredient();
+                            break;
+                        case 4:
+                            EditIngredient();
+                            break;
+                        default:
+                            Console.WriteLine("Nie ma takiej opcji!");
+                            break;
+
+                    }
                 }
             } while (option != -1);
 
+            return;
+        }
+
+        public static void AddProduct()
+        {
+            int option = 0, step = 0;
+            bool success = false;
+
+            Product newProduct = new Product();
+            newProduct.Id = GlobalData.Menu.Max(i => i.Id) + 1;
+
+            do
+            {
+                success = false;
+                Console.Clear();
+                Functions.CustomConsoleWriteLine("Dodawanie produktu o ID " + newProduct.Id, "", false);
+                if (step > 0) Functions.CustomConsoleWriteLine("ID kategorii: " + newProduct.CategoryId, "", false);
+                if (step > 1) Functions.CustomConsoleWriteLine("Nazwa: " + newProduct.Name, "", false);
+                if (step > 2) Functions.CustomConsoleWriteLine("ID składników: " + newProduct.IngredientsId, "", false);
+                if (step > 3) Functions.CustomConsoleWriteLine("Cena: " + newProduct.Price, "", false);
+
+                if(step == 0)
+                {
+                    Console.WriteLine("\nWybierz kategorię produktu: ");
+                    Console.WriteLine("1. Napoje");
+                    Console.WriteLine("2. Pizze");
+                    Console.WriteLine("-1. Anuluj dodawanie produktu");
+                    Console.Write("Wybrana kategoria: ");
+                    try
+                    {
+                        option = int.Parse(Console.ReadLine());
+                    }
+                    catch
+                    {
+                        Functions.CustomConsoleWriteLine("Podaj liczbę!", "red", false);
+                        option = 0;
+                        Console.ReadKey();
+                    }
+
+                    if (option == -1)
+                    {
+                        return;
+                    }
+                    else if (option != 0)
+                    {
+                        if (GlobalData.Menu.Any(i => i.CategoryId == option))
+                        {
+                            newProduct.CategoryId = option;
+                            success = true;
+                            option = 0;
+                        }
+                        else
+                        {
+                            Functions.CustomConsoleWriteLine("Nie ma takiej pozycji!", "red", false);
+                            Thread.Sleep(1000);
+                        }
+                    }
+                }
+
+                if(step == 1)
+                {
+                    string name;
+                    Console.Write("\nPodaj nazwę produktu (nazwa nie może się powtarzać!): ");
+                    name = Console.ReadLine();
+
+                    if (GlobalData.Menu.Any(i => i.Name.ToLower() == name.ToLower() && i.CategoryId == newProduct.CategoryId))
+                    {
+                        Functions.CustomConsoleWriteLine("Nazwa już istnieje w tej kategorii!", "red", false);
+                        Thread.Sleep(1000);
+                    }
+                    else
+                    {
+                        newProduct.Name = name;
+                        success = true;
+                    }
+                }
+
+                if (success) step++;
+            } while (step < 5);
+        }
+
+        public static void EditProduct()
+        {
+
+        }
+
+        public static void AddIngredient()
+        {
+
+        }
+
+        public static void EditIngredient()
+        {
 
         }
     }
@@ -157,8 +277,14 @@ namespace Product_na_telefon
         {
             bool hide_menu = false;
             int selectedCategory = 0;
+
             do
             {
+                Console.Clear();
+                Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ඞ", "green", true);
+                Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
+                //Thread.Sleep(2500); //przerwa w wykonywaniu kodu na 2.5s;
+
                 Functions.CustomConsoleWriteLine("\n1. Napoje", "", false);
                 Functions.CustomConsoleWriteLine("2. Pizze", "", false);
                 Functions.CustomConsoleWriteLine("-1. Logowanie do panelu admina", "", false);
@@ -205,10 +331,6 @@ namespace Product_na_telefon
         public Pizzeria()
         {
 
-            Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ඞ", "green", true);
-            Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
-            //Thread.Sleep(2500); //przerwa w wykonywaniu kodu na 2.5s
-
             this.WyborKategorii();
 
             bool hide_menu = false;
@@ -234,7 +356,7 @@ namespace Product_na_telefon
 
                     if (this.CheckMenuPosition(value) && value != -1)
                     {
-                        GlobalData.Order.Add(value);
+                        //GlobalData.Order.Add(value);
                     }
                     else if(value != -1)
                     {
