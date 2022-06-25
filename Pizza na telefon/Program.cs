@@ -374,19 +374,43 @@ namespace Product_na_telefon
         }
         public void DisplayOrder()
         {
-            Console.Clear();
-            Functions.CustomConsoleWriteLine("Twoje zamówienie: \n", "green", true);
-
-            int i = 0;
-            foreach (Product single_product in GlobalData.Order)
+            bool display_logic = true;
+            int j = 0;
+            string display_choice = "";
+            do
             {
-                Console.WriteLine("{0}. {1} {2}{3}", ++i, single_product.Name, single_product.Price, single_product.CurrencySymbol);
-            }
+                Console.Clear();
+                Functions.CustomConsoleWriteLine("Twoje zamówienie: \n", "green", true);
+                
+                int i = 0;
+                foreach (Product single_product in GlobalData.Order)
+                {
+                    Console.WriteLine("{0}. {1} {2}{3}", ++i, single_product.Name, single_product.Price, single_product.CurrencySymbol);
+                }
+                Console.WriteLine("Wybierz '0' aby wrócić do menu głównego" +
+                                "\nWybierz '1' aby usunąc element zamówienia");
+                display_choice = Console.ReadLine();
 
-            Functions.CustomConsoleWriteLine("\nNaciśnij dowolny przycisk aby wyjść z przeglądu zamówienia");
-            Console.ReadKey();
-            Console.Clear();
-            this.Greeting();
+                switch (display_choice)
+                {
+                    case "0": 
+                        { 
+                            Console.WriteLine("W ciągu (3/s) znajdziesz się w głównym menu"); 
+                            Thread.Sleep(3000); Console.Clear();
+                            this.Greeting();
+                            return; 
+                        }
+                    case "1": 
+                        {
+                            Console.WriteLine("Który element chcesz usunąć?"); 
+                            j = Convert.ToInt32(Console.ReadLine());
+                            GlobalData.Order.RemoveAt(--j);
+                            display_logic = false;
+                            return; 
+                        }
+                    default: { Console.WriteLine("Wybrałeś błędną ocje"); display_logic = false; return; }
+                }
+            } while (display_logic==true);
         }
         public int ChooseCategory()
         {
