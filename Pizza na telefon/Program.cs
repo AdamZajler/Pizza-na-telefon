@@ -87,8 +87,49 @@ namespace Product_na_telefon
             Console.ResetColor();
             return null;
         }
-    }
+        public static string CustomConsoleWrite(string text, string text_color = "white", bool is_centered = false)
+        {
+            text_color = text_color.ToLower();
 
+            switch (text_color)
+            {
+                case "red":
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case "green":
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case "orange":
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    break;
+                case "yellow":
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case "blue":
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
+                case "purple":
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    break;
+                default:
+                    Console.ForegroundColor = ConsoleColor.White;
+                    break;
+            }
+
+            if (is_centered)
+            {
+                Console.SetCursorPosition((Console.WindowWidth - text.Length) / 2, Console.CursorTop);
+                Console.Write(text);
+            }
+            else
+            {
+                Console.Write(text);
+            }
+
+            Console.ResetColor();
+            return null;
+        }
+    }
     public class Admin
     {
         public static void Login()
@@ -288,9 +329,17 @@ namespace Product_na_telefon
 
         }
     }
-
     public class Pizzeria
     {
+        public void Loader()
+        {
+            Console.Write("Ładowanie... //");
+            for(int i=0; i<3; i++)
+            {
+                Console.Write("\\//\\");
+                Thread.Sleep(850);
+            }
+        }
         public void Greeting()
         {
             Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ඞ", "green", true);
@@ -342,18 +391,13 @@ namespace Product_na_telefon
             string selectedCategory_string = "0";
             do
             {
-                Console.Clear();
-                Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ඞ", "green", true);
-                Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
-                //Thread.Sleep(2500); //przerwa w wykonywaniu kodu na 2.5s;
-
                 Functions.CustomConsoleWriteLine("\n1. Napoje", "", false);
                 Functions.CustomConsoleWriteLine("2. Pizze", "", false);
 
                 if(GlobalData.Order.Count > 0)
                 {
                     Functions.CustomConsoleWriteLine("\n9. Zobacz moje zamówienie", "", false);
-                    Functions.CustomConsoleWriteLine("0. Przejdź do składania zamówienia", "", false);
+                    Functions.CustomConsoleWriteLine("0. Przejdź do składania zamówienia", "green", false);
                 }
                 Functions.CustomConsoleWriteLine("-1. Logowanie do panelu admina", "", false);
 
@@ -371,6 +415,11 @@ namespace Product_na_telefon
                 if (selectedCategory == -1)
                 {
                     Admin.Login();
+                }
+                else if(selectedCategory_string == "0" && GlobalData.Order.Count > 0)
+                {
+                    hide_menu = true;
+                    this.Szczegoly_Zamowienia();
                 }
                 else if (selectedCategory_string == "9" && GlobalData.Order.Count > 0)
                 {
@@ -397,64 +446,6 @@ namespace Product_na_telefon
         {
             var menuPosition = products.Find(product => product.Name.ToLower() == providedPosition.ToLower());
             return menuPosition == null ? -1 : menuPosition.Id;
-        }
-        public Product GiveMenuObjById(int menuPositionId)
-        {
-            var menuPosition = GlobalData.Menu.Find(i => i.Id == menuPositionId);
-            return menuPosition;
-        }
-        public Pizzeria()
-        {
-            this.Greeting();
-
-            int selected_category = this.ChooseCategory();
-
-            var selected_category_products = GlobalData.Menu.Where(i => i.CategoryId == selected_category).ToList();
-
-            string value_string;
-            int value = -1;
-            bool is_choosing_position = true;
-
-            Console.Write("\nWybierz pozycje ('0' powrót do kategori)");
-            while(is_choosing_position != false)
-            {
-                Console.Write("\n");
-                Console.Write("Twój wybór: ");
-                value_string = Console.ReadLine();
-
-                try
-                {
-                    value = this.CheckMenuPositionId(int.Parse(value_string), selected_category_products);
-                }catch
-                {
-                    value = this.CheckMenuPositionString(value_string, selected_category_products);
-                }
-
-                if(value != -1)
-                {
-                    GlobalData.Order.Add(GiveMenuObjById(value));
-                }
-                else if(value_string == "0")
-                {
-                    Console.Clear();
-                    this.Greeting();
-                    this.ChooseCategory();
-                }
-                else
-                {
-                    Functions.CustomConsoleWriteLine("Nie ma takiej pozycji w menu", "red", false);
-                }
-            }
-        }
-
-        public void Loader()
-        {
-            Console.Write("Ładowanie... //");
-            for(int i=0; i<3; i++)
-            {
-                Console.Write("\\//\\");
-                Thread.Sleep(850);
-            }
         }
         public bool Menu(int selectedCategory)
         {
@@ -488,6 +479,54 @@ namespace Product_na_telefon
             }
 
             return menu_function_success;
+        }
+        public Product GiveMenuObjById(int menuPositionId)
+        {
+            var menuPosition = GlobalData.Menu.Find(i => i.Id == menuPositionId);
+            return menuPosition;
+        }
+        public Pizzeria()
+        {
+            this.Greeting();
+
+            int selected_category = this.ChooseCategory();
+
+            string value_string;
+            int value = -1;
+            bool is_choosing_position = true;
+
+            Console.Write("\nWybierz pozycje ('0' powrót do kategori)");
+            while(is_choosing_position != false)
+            {
+                var selected_category_products = GlobalData.Menu.Where(i => i.CategoryId == selected_category).ToList();
+
+                Console.Write("\n");
+                Console.Write("Twój wybór: ");
+                value_string = Console.ReadLine();
+
+                try
+                {
+                    value = this.CheckMenuPositionId(int.Parse(value_string), selected_category_products);
+                }catch
+                {
+                    value = this.CheckMenuPositionString(value_string, selected_category_products);
+                }
+
+                if(value != -1)
+                {
+                    GlobalData.Order.Add(GiveMenuObjById(value));
+                }
+                else if(value_string == "0")
+                {
+                    Console.Clear();
+                    this.Greeting();
+                    selected_category = this.ChooseCategory();
+                }
+                else
+                {
+                    Functions.CustomConsoleWriteLine("Nie ma takiej pozycji w menu", "red", false);
+                }
+            }
         }
 
         public void Szczegoly_Zamowienia()
@@ -555,18 +594,18 @@ namespace Product_na_telefon
             //Thread.Sleep(3000);
             //Console.Clear();
 
-            Functions.CustomConsoleWriteLine("Czy twoje dane się zgadzają?","pink",true);
+            Functions.CustomConsoleWrite("Czy twoje dane się zgadzają?\n","pink",true);
 
-            Functions.CustomConsoleWriteLine("IMIE:", "red", false);
-            Console.WriteLine(GlobalData.KlientImie);
-            Functions.CustomConsoleWriteLine("NAZWISKO:", "orange", false);
-            Console.WriteLine(GlobalData.KlientNazwisko);
-            Functions.CustomConsoleWriteLine("ADRES:", "yellow", false);
-            Console.WriteLine(GlobalData.KlientAdres);
-            Functions.CustomConsoleWriteLine("UWAGI:", "green", false);
-            Console.WriteLine(GlobalData.KlientUwagiDoZamowienia);
-            Functions.CustomConsoleWriteLine("METODA PŁATNOŚCI", "blue", false);
-            Console.WriteLine(GlobalData.KlientMetodaPlatnosci);
+            Functions.CustomConsoleWrite("IMIE:", "red", false);
+            Console.WriteLine(" " + GlobalData.KlientImie + "\n");
+            Functions.CustomConsoleWrite("NAZWISKO:", "orange", false);
+            Console.WriteLine(" " + GlobalData.KlientNazwisko + "\n");
+            Functions.CustomConsoleWrite("ADRES:", "yellow", false);
+            Console.WriteLine(" " + GlobalData.KlientAdres + "\n");
+            Functions.CustomConsoleWrite("UWAGI:", "green", false);
+            Console.WriteLine(" " + GlobalData.KlientUwagiDoZamowienia + "\n");
+            Functions.CustomConsoleWrite("METODA PŁATNOŚCI", "blue", false);
+            Console.WriteLine(" " + GlobalData.KlientMetodaPlatnosci + "\n");
 
             string morb="";
             do
