@@ -13,13 +13,13 @@ Aplikacja umożliwiająca przeglądanie i zamawianie pizz przez telefon
 ## Funkcjonalności
 
 - Losowe utwory w tle przywołujące na myśl piękną Italię 💖 
-- Przeglądanie dostępnych pizz
-- Zamawianie pizzy oraz napojów
-- Przeglądanie zamówienia
-- Wybór płatności kartą, gotówką, BLIK-iem
-- Dodawanie nowych pizz
-- Dodawnaie nowych składników
-- Edycja składników
+- Przeglądanie dostępnych pizz 🍕
+- Zamawianie pizzy oraz napojów 🍹
+- Przeglądanie zamówienia 🎖️
+- Wybór płatności kartą, gotówką, BLIK-iem 💲
+- Dodawanie nowych pizz 🆕
+- Dodawnaie nowych składników 🆕
+- Edycja składników 📜
 
 ## Wymagania
 
