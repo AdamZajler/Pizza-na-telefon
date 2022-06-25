@@ -46,6 +46,18 @@ namespace Product_na_telefon
                 case "green":
                     Console.ForegroundColor = ConsoleColor.Green;
                     break;
+                case "orange":
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    break;
+                case "yellow":
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case "blue":
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
+                case "purple":
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    break;
                 default:
                     Console.ForegroundColor = ConsoleColor.White;
                     break;
@@ -114,13 +126,14 @@ namespace Product_na_telefon
 
         public Pizzeria()
         {
-
+            
             Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ඞ", "green", true);
             Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
             //Thread.Sleep(2500); //przerwa w wykonywaniu kodu na 2.5s
 
-            this.WyborKategorii();
-
+            //this.WyborKategorii();
+            //this.Szczegoly_Zamowienia();
+            this.Podsumowanie();
             bool hide_menu = false;
 
             do
@@ -265,7 +278,9 @@ namespace Product_na_telefon
             Functions.CustomConsoleWriteLine("Uwagi do zamówienia", "Green", false);
             GlobalData.KlientUwagiDoZamowienia = Console.ReadLine();
             Functions.CustomConsoleWriteLine("Dostępne metody płatności:", "Green", false);
-            Console.WriteLine("\n1.Karta płatnicza\n2.Płatność gotówką przy odbiorze");
+            Console.WriteLine("\n1.Karta płatnicza" +
+                              "\n2.Płatność gotówką przy odbiorze" +
+                              "\n3.Płatność BLIK");
             bool bledna_platnosc = false;
             do
             {
@@ -276,7 +291,7 @@ namespace Product_na_telefon
                 }
                 catch
                 {
-                    Console.WriteLine("To nie liczba byczq");
+                    Console.WriteLine("Podałeś błędne dane (płatność ~280)");
                 }
 
                 switch (GlobalData.KlientMetodaPlatnosci)
@@ -288,6 +303,12 @@ namespace Product_na_telefon
                     case 2:
                         Console.WriteLine("wybrana metoda płatności to płatność gotówką przy odbiorze");
                         bledna_platnosc = true;
+                        break;
+                    case 3:
+                        Console.WriteLine("wybrana metoda płatności to BLIK" +
+                                        "\nPodaj kod BLIK:");// TODO: dac to do do while zeby siciagal tylko 6 licb
+                        bledna_platnosc = true;
+                        Console.ReadLine();
                         break;
                     default:
                         Console.WriteLine("Wybrana metoda płatności nie istnieje");
@@ -305,13 +326,30 @@ namespace Product_na_telefon
         public void Podsumowanie()
         {
             Console.WriteLine("czyszczenie 3s, może jakiś loader?");
-            Thread.Sleep(3000);
-            Console.Clear();
+            //Thread.Sleep(3000);
+            //Console.Clear();
 
-            Console.WriteLine("Tutaj wypisujemy elementy zamówienia + dane osobowe. wszystko ładnie wyśietlone i wgl. Trzeba pomyśleć nad obiegktem elementów menu tak by można było je wywoływać po numerkach.");
+            Functions.CustomConsoleWriteLine("Czy twoje dane się zgadzają?","pink",true);
 
-            Console.WriteLine("Naciśnij dowolny klawisz aby przejśc do dalej");
-            Console.ReadKey();
+            Functions.CustomConsoleWriteLine("IMIE:", "red", false);
+            Console.WriteLine(GlobalData.KlientImie);
+            Functions.CustomConsoleWriteLine("NAZWISKO:", "orange", false);
+            Console.WriteLine(GlobalData.KlientNazwisko);
+            Functions.CustomConsoleWriteLine("ADRES:", "yellow", false);
+            Console.WriteLine(GlobalData.KlientAdres);
+            Functions.CustomConsoleWriteLine("UWAGI:", "green", false);
+            Console.WriteLine(GlobalData.KlientUwagiDoZamowienia);
+            Functions.CustomConsoleWriteLine("METODA PŁATNOŚCI", "blue", false);
+            Console.WriteLine(GlobalData.KlientMetodaPlatnosci);
+
+            string morb="";
+            do
+            {
+                Functions.CustomConsoleWriteLine("Czy dane się zgadzają? (Y/N)", "purple", false);
+                morb = Console.ReadLine();
+                morb.ToLower();
+            } while (morb != "y" && morb != "n");
+            if (morb == "n") { Console.WriteLine("Następuje przekierowanie do ponownego wpisywania danych (5s)");Thread.Sleep(5000); this.Szczegoly_Zamowienia(); }
             this.ThankYouPage();
         }
 
