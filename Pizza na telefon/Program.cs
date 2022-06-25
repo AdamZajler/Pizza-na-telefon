@@ -35,6 +35,7 @@ namespace Product_na_telefon
     public static class GlobalData
     {
         public static List<Product> Menu = new List<Product>();
+        public static List<Ingredient> Ingredients = new List<Ingredient>();
         public static List<Product> Order = new List<Product>();
         public static string KlientImie;
         public static string KlientNazwisko;
@@ -270,6 +271,24 @@ namespace Product_na_telefon
                     }
                 }
 
+                if (step == 1)
+                {
+                    string name;
+                    Console.Write("\nPodaj nazwę produktu (nazwa nie może się powtarzać!): ");
+                    name = Console.ReadLine();
+
+                    if (GlobalData.Menu.Any(i => i.Name.ToLower() == name.ToLower() && i.CategoryId == newProduct.CategoryId))
+                    {
+                        Functions.CustomConsoleWriteLine("Nazwa już istnieje w tej kategorii!", "red", false);
+                        Thread.Sleep(1000);
+                    }
+                    else
+                    {
+                        newProduct.Name = name;
+                        success = true;
+                    }
+                }
+
                 if (success) step++;
             } while (step < 5);
         }
@@ -294,7 +313,7 @@ namespace Product_na_telefon
     {
         public void Greeting()
         {
-            Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ඞ", "green", true);
+            Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano!", "green", true);
             Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
         }
         public string CheckCategoryString(string category_name)
@@ -343,9 +362,7 @@ namespace Product_na_telefon
             string selectedCategory_string = "0";
             do
             {
-                Console.Clear();
-                Functions.CustomConsoleWriteLine("Witaj w naszej Pizzerii Italiano! ඞ", "green", true);
-                Functions.CustomConsoleWriteLine("Zapraszamy do złożenia zamówienia", "", true);
+                this.Greeting();
                 //Thread.Sleep(2500); //przerwa w wykonywaniu kodu na 2.5s;
 
                 Functions.CustomConsoleWriteLine("\n1. Napoje", "", false);
@@ -406,8 +423,6 @@ namespace Product_na_telefon
         }
         public Pizzeria()
         {
-            this.Greeting();
-
             int selected_category = this.ChooseCategory();
 
             var selected_category_products = GlobalData.Menu.Where(i => i.CategoryId == selected_category).ToList();
@@ -603,10 +618,12 @@ namespace Product_na_telefon
             player.PlayLooping();
 
             //Console.Beep(800, 1000);
-            string fileName = "../../../../src/data/menu.json";
-            string menuJSON = File.ReadAllText(fileName);
+            string menuPath = "../../../../src/data/menu.json";
+            string menuJSON = File.ReadAllText(menuPath);
+            string ingredientsPath = "../../../../src/data/ingredients.json";
+            string ingredientsJSON = File.ReadAllText(ingredientsPath);
             GlobalData.Menu = JsonSerializer.Deserialize<List<Product>>(menuJSON);
-            //Console.WriteLine("Załadowano {0} pozycji w menu", GlobalData.Menu.Count);
+            GlobalData.Ingredients = JsonSerializer.Deserialize<List<Ingredient>>(ingredientsJSON);
             //var functions = new Functions();
             var pizzeria = new Pizzeria();
         }
