@@ -1,5 +1,4 @@
-
-# "Mobilna" aplikacja Pizza na telefon
+# Zadanie na studia | "Mobilna" aplikacja Pizza na telefon
 
 Aplikacja umożliwiająca przeglądanie i zamawianie pizz przez telefon
 
